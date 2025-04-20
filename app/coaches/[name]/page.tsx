@@ -27,7 +27,6 @@ const CoachPage = () => {
             <CoachBanner
                 banner={coach.banner}
                 fullName={coach.fullName}
-                title={coach.title}
             />
             <div className="py-12 px-6 bg-gray-50 min-h-screen">
                 <div className="max-w-4xl mx-auto w-full">
