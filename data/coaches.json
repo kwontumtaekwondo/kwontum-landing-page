@@ -1,51 +1,126 @@
 [
     {
-        "name": "celine",
-        "fullName": "Celine Tan",
-        "title": "Performance analyst",
-        "banner": "/img/coaches/celine/Celine-banner.jpg",
-        "picture": "/img/coaches/celine/celine-profile.png",
-        "quote": "Taekwondo should be Fun! I create a space where kids can smile, move, and grow with confidence and respect.",
+        "name": "ben",
+        "fullName": "Benjamin Sim",
+        "title": "Founder",
+        "banner": "/img/coaches/ben/ben-banner.jpg",
+        "picture": "/img/coaches/ben/ben-profile.png",
+        "quote": "It’s the version of you from the things that you do and the people that you choose to be with that matters.",
         "certificates": [
-            "1st Dan Black Belt",
-            "Poomsae Coach Level 1",
-            "Poomsae Referee",
-            "Assistant Coach at KTMA (Kyourgi)",
-            "Assistant Coach at Maple Bear Preschool",
-            "Coach at Chui Huay Lim Club",
-            "1 Year of Coaching Experience",
-            "Specializes in Kids classes, Poomsae, and Basic Kyourgi"
+            "4th Degree Black Belt",
+            "World Taekwondo Certified Kyorugi Coach Level 2",
+            "Kyorugi Coach - Level 2",
+            "Poomsae Coach - Level 3",
+            "Kyorugi & Poomsae Referee",
+            "MOE-Registered Coach",
+            "PA Registered Coach",
+            "SNOC Registered Coach",
+            "Member, High Performance Committee - STF",
+            "National Coach - Virtual Taekwondo (STF)",
+            "Secretary - IT Committee, STF",
+            "10+ Years of Coaching Experience",
+            "Specializes in High-Performance athlete development, technical Poomsae & Kyorugi coaching, strategic program building"
         ],
         "achievements": [
             {
                 "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "2023 National Kyourgi Champion"
+                "text": "Coached award-winning national team athletes in Poomsae & Kyorugi"
             },
             {
                 "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "Represented Singapore for international Games (2004)"
+                "text": "Built a successful athlete development pipeline within 3 years"
             },
             {
-                "image": "/img/coaches/medal-color-icon.png",
-                "text": "National Kyourgi Gold Medalist (2019-2023)"
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "Leadership roles with NP & TP Taekwondo Team"
+            },
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "Member of STF’s strategic and high-performance development committees"
             }
         ],
-        "type": "Poomsae & Kyourgi Athlete",
+        "type": "Kyorugi Athlete",
         "profile": [
-            "Completed in SYOF 2018 (Poomsae - Gold)",
-            "Medalist in POL-ITE (Poomsae & Kyourgi - 2019/2020)"
+            "2008 Pesta Sukan - Gold",
+            "2009 Pesta Sukan - Silver",
+            "2009 National Team Athlete",
+            "2009 Chin Khee Shin Cup - Silver",
+            "2010 Chin Khee Shin Cup - Gold",
+            "2010 POL-ITE Games - Gold",
+            "2011 NTU Open - Silver",
+            "2014 NTU Open - Gold"
         ],
         "trainingBackground": [
-            "Started in Nanyang Polytechnic (2018)",
-            "Fought under U46 category"
+            "Entered National Development Squad in 2009",
+            "Represented Singapore in international games"
         ],
         "style": [
-            "Known for powerful kicks in Poomsae",
-            "Specializes in Basic Movement for Kyourgi"
+            "Specializes in High-Performance Coaching across both Poomsae & Kyorugi",
+            "Focuses on data-driven training, technical precision, and long-term athlete development",
+            "Known for producing national team athletes and technically competent coaches",
+            "Strong in performance metrics, talent pathway planning, and strategic program building"
         ]
     },
     {
-        "name": "cullen",
+        "name": "chih-chong",
+        "fullName": "Chong Chih Chong",
+        "title": "Director, Strategic Partnerships",
+        "banner": "/img/coaches/cc/cc-banner.jpg",
+        "picture": "/img/coaches/cc/cc-profile.png",
+        "quote": "True development goes beyond physical performance; It’s about building character, instilling confidence, and creating a growth-orientated environment where individuals feel safe to push their limits.",
+        "certificates": [
+            "5th Dan Black Belt / 4th Dan Kukkiwon",
+            "NCAP Level 1 & 2 (FULL - Technical/Theory",
+            "Poomsae Coach Level 3",
+            "Grading Assessor Qualification",
+            "International Kyorugi Referee",
+            "1st Class National Referee (Kyorugi & Poomsae)",
+            "Head Coach - Singapore Polytechnic (20 Years)",
+            "Team Coach - Paya Lebar CC (2004)",
+            "Team Coach - Singapore Institute of Management (2015-2016)",
+            "29 Years of Coaching Experience",
+            "Specializes in Counter-attacking & Defensive Techniques in Kyorugi",
+            "Strong Background in Program Management and Team Leadership"
+        ],
+        "achievements": [
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "1999-2000 Overseas Training & International Representation"
+            },
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "Represented Singapore Internationally (2004)"
+            },
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "International Kyorugi Referee"
+            },
+            {
+                "image": "/img/coaches/medal-color-icon.png",
+                "text": "NTU Taekwondo Open Champion (2007)"
+            }
+        ],
+        "type": "Kyorugi Athlete",
+        "profile": [
+            "1997-2004 Multiple Podiums at IVP, Jalan Besar, NTU, SIMTDC, and other International Championships",
+            "1999: Silver - 2nd Yew Tee Constituency Invitational",
+            "NTU Open Champion (2007)",
+            "Represented Singapore Internationally in 2004",
+            "42nd National Taekwondo Poomsae Championships (2016) - Gold"
+        ],
+        "trainingBackground": [
+            "Started Taekwondo in 1996 at Singapore Polytechnic",
+            "Competed consistently for 29+ years",
+            "Selected to join National Development Squad in 2002",
+            "Internationally represented Singapore in 2004"
+        ],
+        "style": [
+            "Specializes in counter-attacking & defense fighting",
+            "Values balance, agility, timing, and adaptability"
+        ]
+    },
+    {
+        "name": "cullen-ang",
         "fullName": "Cullen Ang",
         "title": "Director, Business ops",
         "banner": "/img/coaches/cullen/Cullen-banner.jpg",
@@ -67,7 +142,7 @@
         "achievements": [
             {
                 "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "2002 NationalDevelopment Squad"
+                "text": "2002 National Development Squad"
             },
             {
                 "image": "/img/coaches/medal-color-icon.png",
@@ -94,7 +169,111 @@
         ]
     },
     {
-        "name": "jina",
+        "name": "ernesto-guzman",
+        "fullName": "Ernesto Guzman Jr",
+        "title": "Performance & Training",
+        "banner": "/img/coaches/ernesto/ernesto-banner.jpg",
+        "picture": "/img/coaches/ernesto/ernesto-profile.png",
+        "quote": "Builder of champions",
+        "certificates": [
+            "4th Dan Black Belt / 6th Dan Kukkiwon PTA",
+            "Poomsae coach Level 3",
+            "Kyourgi Referee Class 3",
+            "Coached 15 National Team Poomsae Players (Philippines)",
+            "Coached 15 National Team Poomsae Players (Singapore)",
+            "24 Years of Coaching",
+            "Specializes in Backthrust & Head Kicks (Kyourgi)",
+            "Specializes in Flexible and Powerful Poomsae Execution"
+        ],
+        "achievements": [
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "6x World Poomsae Champion (Team)"
+            },
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "6x Asian Poomsae Champion"
+            },
+            {
+                "image": "/img/coaches/medal-color-icon.png",
+                "text": "9th Daedo Open Champion (Team Poomsae)"
+            }
+        ],
+        "type": "Poomsae & Kyourgi Athlete",
+        "profile": [
+            "6x Champion for World Poomsae Championship(s)",
+            "4x Champion for Asian Poomsae Championship(s)",
+            "2x Champion for 1st & 2nd Korea Expo Kyourgi",
+            "2x Champion for Hamadang Demonstration Championship",
+            "1x Bronze Medal Korea Classic Open 2006 Kyourgi",
+            "Multiple Medalist for Online Poomsae Championship(s)",
+            "Multiple Poomsae and Kyourgi Medals for Philippines (National & Regional)",
+            "9th Daedo Open Championships 2023 - Champion (Team Poomsae)"
+        ],
+        "trainingBackground": [
+            "Started in 1996 - Present",
+            "Competed in Kyourgi: Flyweight & Bantam weight",
+            "Completed in Poomsae: Senior 2 & Master 1"
+        ],
+        "style": [
+            "Kyorugi: Known for backthrust and head kick precision",
+            "Poomsae: Flexible and powerful with strong control and energy"
+        ]
+    },
+    {
+        "name": "teo-jie-yu",
+        "fullName": "Teo Jie Yu",
+        "title": "Team Manager",
+        "banner": "/img/coaches/jieyu/jieyu-banner.jpg",
+        "picture": "/img/coaches/jieyu/jieyu-profile.png",
+        "quote": "Character building, respect, and goal in life.",
+        "certificates": [
+            "4th Dan Black Belt",
+            "NCAP Technical Level 2",
+            "Poomsae Coach Level 3",
+            "NROC Provisional Member",
+            "Poomsae Referee",
+            "Kyorugi Referee",
+            "Coaches from toddlers to adults",
+            "Coaches Competition Poomsae Class",
+            "13 Years of Coaching Experience",
+            "Specializes in Poomsae Techniques and Foundational Coaching Across All Age Groups"
+        ],
+        "achievements": [
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "Experienced in Coaching All Ages"
+            },
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "Developed Competitive Athletes from Junior to Adult"
+            },
+            {
+                "image": "/img/coaches/medal-color-icon.png",
+                "text": "16th Asian Cities Cup - Bronze (Team Poomsae)"
+            }
+        ],
+        "type": "Kyourgi & Poomsae Athlete",
+        "profile": [
+            "National Poomsae - Junior Division till Present",
+            "National Kyorugi - Cadet & Junior",
+            "NSG - Poomsae & Kyorugi",
+            "POL-ITE 2013-2018 (Poomsae)",
+            "POL-ITE 2013 (Kyorugi)",
+            "NTU TOC 2017-2019 (Poomsae & Kyorugi)"
+        ],
+        "trainingBackground": [
+            "Started in 2017 under RC grassroots programme",
+            "Poomsae: Senior 1",
+            "Kyorugi: Cadet/ Junior U58"
+        ],
+        "style": [
+            "Strong Poomsae Techniques",
+            "Focused on structure, rhythm, and technical accuracy"
+        ]
+    },
+    {
+        "name": "jina-poh",
         "fullName": "Jina Poh",
         "title": "Performance analyst",
         "banner": "/img/coaches/jina/jina-banner.jpg",
@@ -148,111 +327,7 @@
         ]
     },
     {
-        "name": "ernesto",
-        "fullName": "Ernesto Guzman Jr",
-        "title": "Performance & Training",
-        "banner": "/img/coaches/ernesto/ernesto-banner.jpg",
-        "picture": "/img/coaches/ernesto/ernesto-profile.png",
-        "quote": "Builder of champions",
-        "certificates": [
-            "4th Dan Black Belt / 6th Dan Kukkiwon PTA",
-            "Poomsae coach Level 3",
-            "Kyourgi Referee Class 3",
-            "Coached 15 National Team Poomsae Players (Philippines)",
-            "Coached 15 National Team Poomsae Players (Singapore)",
-            "24 Years of Coaching",
-            "Specializes in Backthrust & Head Kicks (Kyourgi)",
-            "Specializes in Flexible and Powerful Poomsae Execution"
-        ],
-        "achievements": [
-            {
-                "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "6x World Poomsae Champion (Team)"
-            },
-            {
-                "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "6x Asian Poomsae Champion"
-            },
-            {
-                "image": "/img/coaches/medal-color-icon.png",
-                "text": "9th Daedo Open Champion (Team Poomsae)"
-            }
-        ],
-        "type": "Poomsae & Kyourgi Athlete",
-        "profile": [
-            "6x Champion for World Poomsae Championship(s)",
-            "4x Champion for Asian Poomsae Championship(s)",
-            "2x Champion for 1st & 2nd Korea Expo Kyourgi",
-            "2x Champion for Hamadang Demonstration Championship",
-            "1x Bronze Medal Korea Classic Open 2006 Kyourgi",
-            "Multiple Medalist for Online Poomsae Championship(s)",
-            "Multiple Poomsae and Kyourgi Medals for Philippines (National & Regional)",
-            "9th Daedo Open Championships 2023 - Champion (Team Poomsae)"
-        ],
-        "trainingBackground": [
-            "Started in 1996 - Present",
-            "Competed in Kyourgi: Flyweight & Bantam weight",
-            "Completed in Poomsae: Senior 2 & Master 1"
-        ],
-        "style": [
-            "Kyorugi: Known for backthrust and head kick precision",
-            "Poomsae: Flexible and powerful with strong control and energy"
-        ]
-    },
-    {
-        "name": "jieyu",
-        "fullName": "Teo Jie Yu",
-        "title": "Team Manager",
-        "banner": "/img/coaches/jieyu/jieyu-banner.jpg",
-        "picture": "/img/coaches/jieyu/jieyu-profile.png",
-        "quote": "Character building, respect, and goal in life.",
-        "certificates": [
-            "4th Dan Black Belt",
-            "NCAP Technical Level 2",
-            "Poomsae Coach Level 3",
-            "NROC Provisional Member",
-            "Poomsae Referee",
-            "Kyorugi Referee",
-            "Coaches from toddlers to adults",
-            "Coaches Competition Poomsae Class",
-            "13 Years of Coaching Experience",
-            "Specializes in Poomsae Techniques and Foundational Coaching Across All Age Groups"
-        ],
-        "achievements": [
-            {
-                "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "Experienced in Coaching All Ages"
-            },
-            {
-                "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "Developed Competitive Athletes from Junior to Adult"
-            },
-            {
-                "image": "/img/coaches/medal-color-icon.png",
-                "text": "16th Asian Cities Cup - Bronze (Team Poomsae)"
-            }
-        ],
-        "type": "Kyourgi Athlete",
-        "profile": [
-            "National Poomsae - Junior Division till Present",
-            "National Kyorugi - Cadet & Junior",
-            "NSG - Poomsae & Kyorugi",
-            "POL-ITE 2013-2018 (Poomsae)",
-            "POL-ITE 2013 (Kyorugi)",
-            "NTU TOC 2017-2019 (Poomsae & Kyorugi)"
-        ],
-        "trainingBackground": [
-            "Started in 2017 under RC grassroots programme",
-            "Poomsae: Senior 1",
-            "Kyorugi: Cadet/ Junior U58"
-        ],
-        "style": [
-            "Strong Poomsae Techniques",
-            "Focused on structure, rhythm, and technical accuracy"
-        ]
-    },
-    {
-        "name": "cezann",
+        "name": "cezann-teng",
         "fullName": "Cezann Teng",
         "title": "Performance Analyst",
         "banner": "/img/coaches/cezann/cezann-banner.jpg",
@@ -267,7 +342,7 @@
             "Kyorugi Referee",
             "Assistant Coach at Zen Academy & Global Taekwondo Academy (all ages)",
             "8 Years of Coaching Experience",
-            "Specializes in Kyorugi, performance analysis, and competition prep"
+            "Specializes in Kyorugi, Performance Analysis, and Competition Prep"
         ],
         "achievements": [
             {
@@ -304,6 +379,51 @@
         ],
         "style": [
             "Known for speed kicking, explosiveness, and footwork"
+        ]
+    },
+    {
+        "name": "celine-tan",
+        "fullName": "Celine Tan",
+        "title": "Performance analyst",
+        "banner": "/img/coaches/celine/Celine-banner.jpg",
+        "picture": "/img/coaches/celine/celine-profile.png",
+        "quote": "Taekwondo should be Fun! I create a space where kids can smile, move, and grow with confidence and respect.",
+        "certificates": [
+            "1st Dan Black Belt",
+            "Poomsae Coach Level 1",
+            "Poomsae Referee",
+            "Assistant Coach at KTMA (Kyourgi)",
+            "Assistant Coach at Maple Bear Preschool",
+            "Coach at Chui Huay Lim Club",
+            "1 Year of Coaching Experience",
+            "Specializes in Kids classes, Poomsae, and Basic Kyourgi"
+        ],
+        "achievements": [
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "2023 National Kyourgi Champion"
+            },
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "Represented Singapore for international Games (2004)"
+            },
+            {
+                "image": "/img/coaches/medal-color-icon.png",
+                "text": "National Kyourgi Gold Medalist (2019-2023)"
+            }
+        ],
+        "type": "Poomsae & Kyourgi Athlete",
+        "profile": [
+            "Completed in SYOF 2018 (Poomsae - Gold)",
+            "Medalist in POL-ITE (Poomsae & Kyourgi - 2019/2020)"
+        ],
+        "trainingBackground": [
+            "Started in Nanyang Polytechnic (2018)",
+            "Fought under U46 category"
+        ],
+        "style": [
+            "Known for powerful kicks in Poomsae",
+            "Specializes in Basic Movement for Kyourgi"
         ]
     }
 ]

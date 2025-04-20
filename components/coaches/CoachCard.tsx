@@ -16,7 +16,7 @@ const CoachCard = ({
     title: string;
 }) => {
     return (
-        <Link href={`/coaches/${name}`} passHref>
+        <Link href={`/about-us/coaches/${name}`} passHref>
             <Card className=" transition-transform duration-300 hover:scale-105 cursor-pointer flex flex-col justify-between">
                 {/* Card Header with Circular Avatar */}
                 <CardHeader className="flex items-center justify-center pb-4">

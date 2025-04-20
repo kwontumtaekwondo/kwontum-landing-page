@@ -24,7 +24,7 @@ const CoachProfile = ({ picture, quote }: { picture: string; quote: string }) =>
         {/* Quote */}
         <div className="text-center md:text-left max-w-xl mt-6 md:mt-16 lg:mt-18">
           <p className="text-xl font-dolceVita font-bold">
-            "{quote}"
+          &quot;{quote}&quot;
           </p>
         </div>
       </div>

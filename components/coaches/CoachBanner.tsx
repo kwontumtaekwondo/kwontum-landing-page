@@ -1,7 +1,7 @@
 // components/coaches/CoachBanner.tsx
 import Image from "next/image";
 
-const CoachBanner = ({ banner, fullName, title }: { banner: string; fullName: string; title: string }) => {
+const CoachBanner = ({ banner, fullName }: { banner: string; fullName: string; title: string }) => {
   return (
     <div className="relative">
       {/* Background Banner */}
