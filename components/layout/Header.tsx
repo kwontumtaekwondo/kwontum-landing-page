@@ -42,18 +42,11 @@ export default function Header() {
           <div className="absolute top-24 left-0 right-0 bg-white shadow-lg py-4 px-6 z-50">
             <div className="flex flex-col text-center gap-5 text-lg text-gray-800 font-dolceVita">
               <Link
-                href="/#about-us"
+                href="/about-us"
                 className="hover:text-kwontum-darkRed transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About Us
-              </Link>
-              <Link
-                href="/coaches"
-                className="hover:text-kwontum-darkRed transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Our Coaches
               </Link>
             </div>
           </div>
@@ -63,17 +56,10 @@ export default function Header() {
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-8 font-[550] font-dolceVita">
         <Link
-          href="/#about-us"
+          href="/about-us"
           className="nav-link hover:text-brand-secondary hover:scale-105 transition-colors duration-100"
         >
           About Us
-        </Link>
-        <Link
-          href="/coaches"
-          className="hover:text-kwontum-darkRed transition-colors"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Our Coaches
         </Link>
       </nav>
     </header>
