@@ -14,7 +14,7 @@ export default function Header() {
       <div className="bg-white p-2 rounded-md">
         <Link href="/" className="flex-shrink-0">
           <Image
-            src="/img/logo.svg"
+            src="/img/logo.png"
             alt="Logo"
             width={150}
             height={80}
