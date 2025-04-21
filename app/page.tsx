@@ -19,7 +19,7 @@ export default function Home() {
                             WE ARE KWONTUM!
                         </h1>
                         <a
-                            href="https://wa.me/6583154443?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
+                            href="https://wa.me/6584674113?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
@@ -142,7 +142,7 @@ export default function Home() {
                         READY TO KICKSTART YOUR JOURNEY?
                     </h2>
                     <a
-                        href="https://wa.me/6583154443?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
+                        href="https://wa.me/6584674113?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex justify-center"
@@ -282,7 +282,7 @@ export default function Home() {
                                     <strong>Email:</strong> Hello@kwontum.com.sg
                                 </p>
                                 <a
-                                    href="https://wa.me/6583154443?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
+                                    href="https://wa.me/6584674113?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex justify-center"
@@ -298,7 +298,7 @@ export default function Home() {
             </section>
 
             <a
-                href="https://wa.me/6583154443?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
+                href="https://wa.me/6584674113?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110"

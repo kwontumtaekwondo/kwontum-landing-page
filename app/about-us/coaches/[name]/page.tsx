@@ -22,7 +22,7 @@ const CoachPage = () => {
     }
 
     return (
-        <div>
+        <div className="w-full">
             {/* Coach Banner */}
             <CoachBanner
                 banner={coach.banner}

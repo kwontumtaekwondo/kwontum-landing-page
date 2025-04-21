@@ -34,7 +34,7 @@ const AboutUs = () => {
             <div className="mb-12 px-4 md:px-0">
                 {/* Headline Box */}
                 <div className="text-center mb-12">
-                    <p className="text-7xl xs:7xl lg:text-6l font-bold font-dolceVita mb-4 text-kwontum-darkRed">
+                    <p className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-dolceVita mb-4 text-kwontum-darkRed leading-tight break-words text-center">
                         Driven by fundamentals <br />Defined by excellence</p>
                 </div>
 

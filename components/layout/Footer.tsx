@@ -24,7 +24,7 @@ export default function Footer() {
                     Join us today and start your journey!
                 </p>
                 {/* <Image
-                    src="/img/logo.svg"
+                    src="/img/logo.png"
                     alt="KBH Logo"
                     width={300}
                     height={125}
@@ -71,10 +71,10 @@ export default function Footer() {
                     <div className="flex items-start gap-2 text-sm">
                         <Mail size={16} className="flex-shrink-0" />
                         <a
-                            href="mailto:Hello@kwontum.com.sg"
+                            href="mailto:hello@kwontum.com.sg"
                             className="hover:underline"
                         >
-                            Hello@kwontum.com.sg
+                            hello@kwontum.com.sg
                         </a>
                     </div>
                     <div className="flex items-start gap-2 text-sm">
@@ -85,7 +85,7 @@ export default function Footer() {
                     </div>
                     <div className="flex items-start gap-2 text-sm">
                         <Phone size={16} className="flex-shrink-0" />
-                        <p className="text-sm">+65 8315 4443 (WhatsApp Only)</p>
+                        <p className="text-sm">+65 8467 4113 (WhatsApp Only)</p>
                     </div>
                 </div>
 
@@ -97,11 +97,11 @@ export default function Footer() {
                         <div className="flex flex-col">
                             <div className="flex items-center gap-2 text-sm">
                                 <Calendar size={16} className="flex-shrink-0" />
-                                <p className="text-sm"> Tuesday - Friday </p>
+                                <p className="text-sm"> Monday - Friday </p>
                             </div>
                             <div className="flex items-center gap-2 text-sm">
                                 <Clock size={16} className="flex-shrink-0" />
-                                <p className="text-sm"> 1600 - 1100 </p>
+                                <p className="text-sm"> 1600 - 2030 </p>
                             </div>
                         </div>
                         <div className="flex flex-col">
