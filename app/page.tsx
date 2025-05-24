@@ -248,7 +248,7 @@ export default function Home() {
             {/* <TestimonialCarousel /> */}
 
             {/* Contact Section */}
-            <section className="py-12 sm:py-16 lg:py-20 bg-white dark:bg-gray-900">
+            <section id = "contact" className="py-12 sm:py-16 lg:py-20 bg-white dark:bg-gray-900">
                 <div className="px-4 sm:px-6 lg:px-8">
                     <h2 className="text-5xl font-bold mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center text-[#72161D] font-dolceVita">
                         Contact Us

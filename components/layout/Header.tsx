@@ -48,6 +48,20 @@ export default function Header() {
               >
                 About Us
               </Link>
+              <Link
+                href="/#contact"
+                className="hover:text-kwontum-darkRed transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact Us
+              </Link>
+              <Link
+                href="/about-us/coaches"
+                className="hover:text-kwontum-darkRed transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Meet Our Coaches
+              </Link>
             </div>
           </div>
         )}
@@ -60,6 +74,18 @@ export default function Header() {
           className="nav-link hover:text-brand-secondary hover:scale-105 transition-colors duration-100"
         >
           About Us
+        </Link>
+        <Link
+          href="/#contact"
+          className="nav-link hover:text-brand-secondary hover:scale-105 transition-colors duration-100"
+        >
+          Contact Us
+        </Link>
+        <Link
+          href="/about-us/coaches"
+          className="nav-link hover:text-brand-secondary hover:scale-105 transition-colors duration-100"
+        >
+          Meet Our Coaches
         </Link>
       </nav>
     </header>
