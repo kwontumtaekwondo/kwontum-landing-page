@@ -3,8 +3,51 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Award, House, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useRef, useState } from 'react';
 
 export default function Home() {
+  const playerRef = useRef<any>(null);
+  const [isMuted, setIsMuted] = useState(true);
+
+  useEffect(() => {
+    // Dynamically load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.body.appendChild(tag);
+
+    // Setup the player when API is ready
+    (window as any).onYouTubeIframeAPIReady = () => {
+      playerRef.current = new (window as any).YT.Player('kwontum-video', {
+        videoId: '64UqK4qLi1M',
+        playerVars: {
+  autoplay: 1,
+  playlist: '64UqK4qLi1M',
+  mute: 1,
+  controls: 0,
+  showinfo: 0,
+  modestbranding: 1,
+  loop: 1,
+  rel: 0,
+  playsinline: 1,
+  fs: 0, // disable fullscreen button
+  iv_load_policy: 3, // hide annotations
+  disablekb: 1, // disable keyboard controls
+        },
+        events: {
+          onReady: (event: any) => {
+            event.target.playVideo();
+          },
+        },
+      });
+    };
+  }, []);
+
+  const handleUnmute = () => {
+    if (playerRef.current) {
+      playerRef.current.unMute();
+      setIsMuted(false);
+    }
+  };
     return (
         <>
             {/* Position the ThemeToggle at the top-right */}
@@ -12,27 +55,89 @@ export default function Home() {
             <ThemeToggle />
         </div> */}
 
-            <section>
-                <div className="flex items-center justify-center m-40 xs:m-50 lg:m-60">
-                    <div className="text-center px-4 sm:px-6 lg:px-8">
-                        <h1 className="text-6xl xs:7xl lg:text-8xl font-bold font-dolceVita mb-4 text-kwontum-darkRed">
-                            WE ARE KWONTUM!
-                        </h1>
-                        <a
-                            href="https://wa.me/6584674113?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <Button
-                                size="lg"
-                                className="bg-[#C1272D] hover:bg-[#72161D] text-white text-base sm:text-lg px-6 py-3 mt-8"
-                            >
-                                Contact Us
-                            </Button>
-                        </a>
-                    </div>
-                </div>
-            </section>
+    <section className="relative h-[100vh] w-full overflow-hidden">
+      {/* YouTube video placeholder */}
+  <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+  <div
+    className="min-w-full min-h-full pointer-events-auto"
+    style={{
+      transform: "scale(1.2) translate(-10vw, -5vh)",
+      transformOrigin: "top left",
+    }}
+    id="kwontum-video"
+  ></div>
+</div>
+
+
+      {/* Overlay for contrast */}
+      <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+
+      {/* Unmute button */}
+{/* Volume Controls */}
+<div className="absolute bottom-4 right-4 z-30 bg-white text-black p-3 rounded shadow flex items-center gap-4 transition-all">
+  {/* Mute/Unmute Button */}
+  <button
+    onClick={() => {
+      if (playerRef.current) {
+        if (isMuted) {
+          playerRef.current.unMute();
+        } else {
+          playerRef.current.mute();
+        }
+        setIsMuted(!isMuted);
+      }
+    }}
+    className="text-xl"
+    title={isMuted ? "Unmute" : "Mute"}
+  >
+    {isMuted ? "🔇" : "🔊"}
+  </button>
+
+  {/* Volume Slider */}
+  <input
+    type="range"
+    min="0"
+    max="100"
+    defaultValue={50}
+    onChange={(e) => {
+      const volume = parseInt(e.target.value, 10);
+      if (playerRef.current) {
+        playerRef.current.setVolume(volume);
+        if (volume === 0 && !isMuted) {
+          playerRef.current.mute();
+          setIsMuted(true);
+        } else if (volume > 0 && isMuted) {
+          playerRef.current.unMute();
+          setIsMuted(false);
+        }
+      }
+    }}
+    className="w-28 accent-[#72161D]"
+  />
+</div>
+
+
+
+      {/* Foreground content */}
+      <div className="relative z-20 flex flex-col justify-center items-center h-full px-4 sm:px-6 lg:px-8 text-center">
+        <h1 className="text-6xl xs:text-7xl lg:text-8xl font-bold font-dolceVita mb-4 text-white">
+          WE ARE KWONTUM!
+        </h1>
+        <a
+          href="https://wa.me/6584674113?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button
+            size="lg"
+            className="bg-[#C1272D] hover:bg-[#72161D] text-white text-base sm:text-lg px-6 py-3 mt-8"
+          >
+            Contact Us
+          </Button>
+        </a>
+      </div>
+    </section>
+
 
             <section className="py-12 sm:py-16 lg:py-20 bg-gray-100 dark:bg-gray-800">
                 <h2 className="text-3xl xs:text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gray-600 font-dolceVita">
@@ -248,7 +353,7 @@ export default function Home() {
             {/* <TestimonialCarousel /> */}
 
             {/* Contact Section */}
-            <section id = "contact" className="py-12 sm:py-16 lg:py-20 bg-white dark:bg-gray-900">
+            <section id="contact" className="py-12 sm:py-16 lg:py-20 bg-white dark:bg-gray-900">
                 <div className="px-4 sm:px-6 lg:px-8">
                     <h2 className="text-5xl font-bold mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center text-[#72161D] font-dolceVita">
                         Contact Us
