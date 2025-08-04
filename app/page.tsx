@@ -8,7 +8,8 @@ declare global {
                     videoId?: string,
                     playerVars?: Record<string, number | string>,
                     events?: {
-                        onReady?: (event: { target: YTPlayer }) => void
+                        onReady?: (event: { target: YTPlayer }) => void,
+                        onStateChange?: (event: { data: number, target: YTPlayer }) => void
                     }
                 }
             ) => YTPlayer
@@ -24,8 +25,11 @@ interface YTPlayer {
     mute(): void;
     unMute(): void;
     setVolume(volume: number): void;
+    getCurrentTime(): number;
+    seekTo(seconds: number, allowSeekAhead: boolean): void;
     // Add other methods you need
 }
+
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Award, House, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,12 +40,10 @@ export default function Home() {
     const [isMuted, setIsMuted] = useState(true);
 
     useEffect(() => {
-        // Dynamically load YouTube IFrame API
         const tag = document.createElement('script');
         tag.src = 'https://www.youtube.com/iframe_api';
         document.body.appendChild(tag);
 
-        // Setup the player when API is ready
         window.onYouTubeIframeAPIReady = () => {
             playerRef.current = new window.YT.Player('kwontum-video', {
                 videoId: '64UqK4qLi1M',
@@ -52,19 +54,40 @@ export default function Home() {
                     controls: 0,
                     showinfo: 0,
                     modestbranding: 1,
-                    loop: 1,
+                    loop: 0,
                     rel: 0,
                     playsinline: 1,
-                    fs: 0, // disable fullscreen button
-                    iv_load_policy: 3, // hide annotations
-                    disablekb: 1, // disable keyboard controls
+                    fs: 0,
+                    iv_load_policy: 3,
+                    disablekb: 1,
                 },
                 events: {
                     onReady: (event) => {
                         event.target.playVideo();
                     },
+                    onStateChange: (event) => {
+                        if (event.data === window.YT.PlayerState.PLAYING) {
+                            // Check every 500ms when playing
+                            const checkTime = () => {
+                                if (playerRef.current) {
+                                    const currentTime = playerRef.current.getCurrentTime();
+                                    if (currentTime >= 38) {
+                                        playerRef.current.seekTo(0, true);
+                                        playerRef.current.playVideo();
+                                    } else {
+                                        setTimeout(checkTime, 500);
+                                    }
+                                }
+                            };
+                            checkTime();
+                        }
+                    }
                 },
             });
+        };
+
+        return () => {
+            playerRef.current = null;
         };
     }, []);
 
@@ -77,16 +100,22 @@ export default function Home() {
 
             <section className="relative h-[100vh] w-full overflow-hidden">
                 {/* YouTube video placeholder */}
-                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                    <div
-                        className="min-w-full min-h-full pointer-events-auto"
-                        style={{
-                            transform: "scale(1.2) translate(-10vw, -5vh)",
-                            transformOrigin: "top left",
-                        }}
-                        id="kwontum-video"
-                    ></div>
-                </div>
+               <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+  <div
+    className="min-w-full min-h-full pointer-events-auto"
+    style={{
+      transform: "scale(1.2) translateY(-5%)", // Only translateY to crop top
+      transformOrigin: "center",
+      width: "100%",
+      height: "100%",
+      position: "absolute",
+      left: "50%",
+      top: "50%",
+      translate: "-50% -50%"
+    }}
+    id="kwontum-video"
+  ></div>
+</div>
 
 
                 {/* Overlay for contrast */}
