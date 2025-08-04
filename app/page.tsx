@@ -60,6 +60,11 @@ export default function Home() {
                     fs: 0,
                     iv_load_policy: 3,
                     disablekb: 1,
+                    width: '100%',
+                    height: '100%',
+                    // Mobile-specific optimizations
+                    enablejsapi: 1,
+                    origin: typeof window !== 'undefined' ? window.location.origin : ''
                 },
                 events: {
                     onReady: (event) => {
@@ -99,24 +104,40 @@ export default function Home() {
         </div> */}
 
             <section className="relative h-[100vh] w-full overflow-hidden">
-                {/* YouTube video placeholder */}
-               <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-  <div
-    className="min-w-full min-h-full pointer-events-auto"
-    style={{
-      transform: "scale(1.2) translateY(-5%)", // Only translateY to crop top
-      transformOrigin: "center",
-      width: "100%",
-      height: "100%",
-      position: "absolute",
-      left: "50%",
-      top: "50%",
-      translate: "-50% -50%"
-    }}
-    id="kwontum-video"
-  ></div>
-</div>
-
+                {/* YouTube video placeholder - Mobile Optimized */}
+                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                    <div
+                        className="min-w-full min-h-full pointer-events-auto"
+                        style={{
+                            // Mobile-first approach with responsive scaling
+                            transform: `
+        scale(${typeof window !== 'undefined' && window.innerWidth < 768
+                                    ? Math.max(
+                                        window.innerHeight / (9 / 16 * window.innerWidth),
+                                        1
+                                    ) // Scale to fill height without cropping sides
+                                    : 1.2 // Normal zoom on desktop
+                                })
+        translateY(${typeof window !== 'undefined' && window.innerWidth < 768
+                                    ? '-5%'  // Slight vertical adjustment on mobile
+                                    : '-5%'   // Same adjustment on desktop
+                                })
+      `,
+                            transformOrigin: "center",
+                            width: "100%",
+                            height: "100%",
+                            position: "absolute",
+                            left: "50%",
+                            top: "50%",
+                            translate: "-50% -50%",
+                            // Mobile-specific aspect ratio handling
+                            aspectRatio: typeof window !== 'undefined' && window.innerWidth < 768
+                                ? "auto"
+                                : "16/9"
+                        }}
+                        id="kwontum-video"
+                    ></div>
+                </div>
 
                 {/* Overlay for contrast */}
                 <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
@@ -247,7 +268,7 @@ export default function Home() {
                         <Card className="bg-white dark:bg-gray-900 ">
                             <CardHeader>
                                 <CardTitle className="text-[#72161D] text-2xl font-dolceVita">
-                                    Toddlers
+                                    Toddlers & Kids
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>

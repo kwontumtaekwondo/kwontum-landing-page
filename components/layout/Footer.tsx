@@ -97,11 +97,11 @@ export default function Footer() {
                         <div className="flex flex-col">
                             <div className="flex items-center gap-2 text-sm">
                                 <Calendar size={16} className="flex-shrink-0" />
-                                <p className="text-sm"> Monday - Friday </p>
+                                <p className="text-sm"> Tuesday - Friday </p>
                             </div>
                             <div className="flex items-center gap-2 text-sm">
                                 <Clock size={16} className="flex-shrink-0" />
-                                <p className="text-sm"> 1600 - 2030 </p>
+                                <p className="text-sm"> 1500 - 2130 </p>
                             </div>
                         </div>
                         <div className="flex flex-col">
@@ -111,7 +111,7 @@ export default function Footer() {
                             </div>
                             <div className="flex items-center gap-2 text-sm">
                                 <Clock size={16} className="flex-shrink-0" />
-                                <p className="text-sm"> 0930 - 1730 </p>
+                                <p className="text-sm"> 0930 - 1830 </p>
                             </div>
                         </div>
                     </div>
