@@ -103,7 +103,7 @@ export default function Home() {
             <ThemeToggle />
         </div> */}
 
-            <section className="relative h-[100vh] w-full overflow-hidden">
+            <section className="relative h-auto sm:h-[100vh] w-full overflow-hidden">
                 {/* YouTube video placeholder - Mobile Optimized */}
                 <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                     <div
@@ -142,9 +142,8 @@ export default function Home() {
                 {/* Overlay for contrast */}
                 <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
 
-                {/* Unmute button */}
                 {/* Volume Controls */}
-                <div className="absolute bottom-4 right-4 z-30 bg-white text-black p-3 rounded shadow flex items-center gap-4 transition-all">
+                <div className="absolute bottom-2 right-2 z-30 bg-white text-black p-2 sm:p-3 rounded shadow flex items-center gap-2 sm:gap-4 transition-all text-sm sm:text-base">
                     {/* Mute/Unmute Button */}
                     <button
                         onClick={() => {
@@ -157,7 +156,7 @@ export default function Home() {
                                 setIsMuted(!isMuted);
                             }
                         }}
-                        className="text-xl"
+                        className="text-lg sm:text-xl"
                         title={isMuted ? "Unmute" : "Mute"}
                     >
                         {isMuted ? "🔇" : "🔊"}
@@ -182,7 +181,7 @@ export default function Home() {
                                 }
                             }
                         }}
-                        className="w-28 accent-[#72161D]"
+                        className="w-12 sm:w-28 accent-[#72161D]"
                     />
                 </div>
 
@@ -200,10 +199,11 @@ export default function Home() {
                     >
                         <Button
                             size="lg"
-                            className="bg-[#C1272D] hover:bg-[#72161D] text-white text-base sm:text-lg px-6 py-3 mt-8"
+                            className="bg-[#C1272D] hover:bg-[#72161D] text-white text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 mt-4 sm:mt-8"
                         >
                             Contact Us
                         </Button>
+
                     </a>
                 </div>
             </section>
