@@ -47,7 +47,7 @@ const AboutUs = () => {
                             alt="Coaching Photo"
                             width={500}
                             height={300}
-                            className="rounded-lg shadow-md"
+                            className="rounded-lg"
                         />
                     </div>
 

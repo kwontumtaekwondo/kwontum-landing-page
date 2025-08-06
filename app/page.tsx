@@ -189,7 +189,7 @@ export default function Home() {
 
                 {/* Foreground content */}
                 <div className="relative z-20 flex flex-col justify-center items-center h-full px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-6xl xs:text-7xl lg:text-8xl font-bold font-dolceVita mb-4 text-white">
+                    <h1 className="text-5xl xs:text-7xl lg:text-8xl font-bold font-dolceVita mt-8 mb-4 text-white">
                         WE ARE KWONTUM!
                     </h1>
                     <a

@@ -101,7 +101,7 @@ export default function Footer() {
                             </div>
                             <div className="flex items-center gap-2 text-sm">
                                 <Clock size={16} className="flex-shrink-0" />
-                                <p className="text-sm"> 1500 - 2130 </p>
+                                <p className="text-sm"> 1530 - 2130 </p>
                             </div>
                         </div>
                         <div className="flex flex-col">
