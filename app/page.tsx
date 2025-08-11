@@ -189,8 +189,8 @@ export default function Home() {
 
                 {/* Foreground content */}
                 <div className="relative z-20 flex flex-col justify-center items-center h-full px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-5xl xs:text-7xl lg:text-8xl font-bold font-dolceVita mt-8 mb-4 text-white">
-                        WE ARE KWONTUM!
+                    <h1 className="text-3xl xs:text-7xl lg:text-8xl font-bold font-dolceVita mt-8 mb-4 text-white">
+                        WE ARE KWONTUM
                     </h1>
                     <a
                         href="https://wa.me/6584674113?text=Hello%21%20Thank%20You%20For%20Reaching%20Out!"
@@ -199,7 +199,7 @@ export default function Home() {
                     >
                         <Button
                             size="lg"
-                            className="bg-[#C1272D] hover:bg-[#72161D] text-white text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 mt-4 sm:mt-8"
+                            className="bg-[#C1272D] hover:bg-[#72161D] text-white text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 mt-4 sm:mt-8 mb-4"
                         >
                             Contact Us
                         </Button>
