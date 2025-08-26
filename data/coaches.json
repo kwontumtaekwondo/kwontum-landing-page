@@ -24,19 +24,27 @@
         "achievements": [
             {
                 "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "Coached award-winning national team athletes in Poomsae & Kyorugi"
+                "text": "Coached award-winning national team athletes in Poomsae & Kyorugi "
             },
             {
                 "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "Built a successful athlete development pipeline within 3 years"
+                "text": "Built a successful elite athlete development pipeline within 3 years of founding"
             },
             {
                 "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "Leadership roles with NP & TP Taekwondo Team"
+                "text": "Leadership roles at varsity Taekwondo Teams of tertiary institutes"
             },
             {
                 "image": "/img/coaches/christmas-star-decoration-icon.png",
-                "text": "Member of STF’s strategic and high-performance development committees"
+                "text": "Member of STF’s high-performance development committee"
+            },
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "Led Team Singapore in international championships at World, Continental and Regional games"
+            },
+            {
+                "image": "/img/coaches/christmas-star-decoration-icon.png",
+                "text": "Technical strategist for Team Singapore athlete pathway development"
             }
         ],
         "type": "Kyorugi Athlete",
@@ -51,8 +59,9 @@
             "2014 NTU Open - Gold"
         ],
         "trainingBackground": [
-            "Entered National Development Squad in 2009",
-            "Represented Singapore in international games"
+            "National Team member (2009)",
+            "Multi-year National Champion",
+            "Varsity Games Champion"
         ],
         "style": [
             "Specializes in High-Performance Coaching across both Poomsae & Kyorugi",
