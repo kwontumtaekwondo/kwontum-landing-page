@@ -21,7 +21,7 @@ const JoinUs = () => {
                         Our coaches will build their focus and resilience that extends beyond
                         the workshops while engaging in fun-filled sessions that keep them
                         moving, learning, and enjoying! Aside from exclusive Team Kwontum
-                        merchandise and event shirt, the children will take home lasting
+                        merchandise and an event shirt, the children will take home lasting
                         memories from this enriching season.
                     </p>
                     <p className="text-lg leading-relaxed">
@@ -40,7 +40,7 @@ const JoinUs = () => {
                     <p className="text-lg leading-relaxed">
                         Enjoy early bird discounts with{" "}
                         <span className="font-extrabold">$130 per workshop (U.P. $150)</span> or{" "}
-                        <span className="font-extrabold">$470 for all 4 (U.P. $550)</span>
+                        <span className="font-extrabold">$470 for all 4 (U.P. $550) </span>
                         when you <span className="font-extrabold">sign up by 31 Oct 2025</span>.
                         Don&apos;t miss this empowering holiday experience!
                     </p>
