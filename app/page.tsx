@@ -34,7 +34,6 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, Award, House, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useRef, useState } from 'react';
-import { start } from "repl";
 
 export default function Home() {
     const playerRef = useRef<YTPlayer | null>(null);

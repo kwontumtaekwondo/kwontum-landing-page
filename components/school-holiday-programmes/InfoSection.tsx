@@ -1,13 +1,20 @@
-// components/school-holiday-programmes/InfoSection.tsx
+import Image from "next/image"
+
 const InfoSection = () => {
     return (
-        <div className="bg-white py-20">
+        <div className="bg-white py-16">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-left text-black font-nanum space-y-16">
 
                 {/* WhatsApp Section */}
                 <div>
                     <div className="flex items-center gap-4 mb-6">
-                        <img src="/img/school-holiday/7.png" className="w-12 h-12" alt="WhatsApp icon" />
+                        <Image
+                            src="/img/school-holiday/7.png"
+                            width={48}
+                            height={48}
+                            className="w-12 h-12"
+                            alt="WhatsApp icon"
+                        />
                         <h2 className="text-2xl font-bold font-dolceVita">
                             Have Questions?
                         </h2>
@@ -17,7 +24,7 @@ const InfoSection = () => {
                             Want to know more before signing up? WhatsApp us today!
                         </p>
                         <p>
-                            We're happy to answer your questions and help your child join an
+                            We&apos;re happy to answer your questions and help your child join an
                             unforgettable holiday experience.
                         </p>
                     </div>
@@ -26,7 +33,13 @@ const InfoSection = () => {
                 {/* Location Section */}
                 <div>
                     <div className="flex items-center gap-4 mb-6">
-                        <img src="/img/school-holiday/6.png" className="w-12 h-12" alt="Location icon" />
+                        <Image
+                            src="/img/school-holiday/6.png"
+                            width={48}
+                            height={48}
+                            className="w-12 h-12"
+                            alt="Location icon"
+                        />
                         <h2 className="text-2xl font-bold font-dolceVita">
                             Where Are We Located At
                         </h2>
@@ -40,9 +53,11 @@ const InfoSection = () => {
 
                 {/* Image Section */}
                 <div className="mt-12">
-                    <img
+                    <Image
                         src="/img/school-holiday/9.png"
                         alt="Kwontum Taekwondo Location"
+                        width={800} 
+                        height={600}
                         className="w-3/4 h-auto rounded-lg shadow-lg object-cover"
                     />
                 </div>

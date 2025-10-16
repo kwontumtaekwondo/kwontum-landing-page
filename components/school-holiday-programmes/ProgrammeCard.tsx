@@ -1,4 +1,4 @@
-// components/school-holiday-programmes/ProgrammeCard.tsx
+import Image from "next/image"
 interface ProgrammeCardProps {
   title: string;
   imageSrc: string;
@@ -27,12 +27,14 @@ const ProgrammeCard = ({
             {title}
           </h2>
 
-          {/* Image (reduced to 75% width) */}
+          {/* Image (reduced to 50% width) */}
           {imageSrc && (
             <div className="w-1/2 mb-8">
-              <img
+              <Image
                 src={imageSrc}
                 alt={title}
+                width={600}  
+                height={400} 
                 className="w-full h-auto rounded-lg shadow-lg object-cover"
               />
             </div>
@@ -52,9 +54,9 @@ const ProgrammeCard = ({
           {/* Programme Information below date */}
           <div className="space-y-6 text-black font-nanum text-left">
             {/* Allow HTML inside description */}
-            <p 
+            <p
               className="text-lg leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: description }} 
+              dangerouslySetInnerHTML={{ __html: description }}
             />
             {fullDescription && (
               <p className="text-lg leading-relaxed">{fullDescription}</p>

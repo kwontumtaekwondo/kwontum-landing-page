@@ -25,7 +25,7 @@ const JoinUs = () => {
                         memories from this enriching season.
                     </p>
                     <p className="text-lg leading-relaxed">
-                        Kwontum Taekwondo isn't just about martial arts; it's about fostering
+                        Kwontum Taekwondo isn&apos;t just about martial arts; it&apos;s about fostering
                         discipline, confidence, and community.
                     </p>
                 </div>
@@ -39,11 +39,10 @@ const JoinUs = () => {
                 <div className="text-black font-nanum space-y-6 mb-12">
                     <p className="text-lg leading-relaxed">
                         Enjoy early bird discounts with{" "}
-                        <span className="font-extrabold">$130 per workshop (U.P.
-                            $150)</span> or{" "}
+                        <span className="font-extrabold">$130 per workshop (U.P. $150)</span> or{" "}
                         <span className="font-extrabold">$470 for all 4 (U.P. $550)</span>
                         when you <span className="font-extrabold">sign up by 31 Oct 2025</span>.
-                        Don't miss this empowering holiday experience!
+                        Don&apos;t miss this empowering holiday experience!
                     </p>
                     <p className="text-lg leading-relaxed font-extrabold">
                         Registration closes 17 Nov 2025.

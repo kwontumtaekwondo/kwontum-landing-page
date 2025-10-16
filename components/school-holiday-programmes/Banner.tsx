@@ -1,24 +1,28 @@
 // components/school-holiday-programmes/Banner.tsx
 import { Button } from "@/components/ui/button";
+import Image from "next/image"
 
 const BannerSection = () => {
     return (
         <div className="w-full">
             {/* Banner Image */}
             <div className="relative w-full">
-                <img
+                <Image
                     src="/img/school-holiday/banner.png"
                     alt="School Holiday Programmes Banner"
+                    width={1200}
+                    height={400}
                     className="w-full h-auto"
+                    priority // Optional: loads this image first since it's above the fold
                 />
             </div>
 
             {/* Text Content Below Banner */}
-            <div className="bg-white py-16">
+            <div className="bg-white mt-16">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
                     <div className="text-center space-y-6">
                         <p className="text-lg text-gray-700 font-nanum leading-relaxed">
-                            Give your child a school holiday they'll never forget! Our workshops combine physical activity, creative movement, self-defence, teamwork, and life skills, helping kids grow in a safe and supportive environment.
+                            Give your child a school holiday they&apos;ll never forget! Our workshops combine physical activity, creative movement, self-defence, teamwork, and life skills, helping kids grow in a safe and supportive environment.
                         </p>
                         <p className="text-lg text-gray-700 font-nanum font-bold leading-relaxed">
                             No prior experience in Taekwondo needed.
