@@ -34,67 +34,66 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, Award, House, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useRef, useState } from 'react';
+import { start } from "repl";
 
 export default function Home() {
     const playerRef = useRef<YTPlayer | null>(null);
     const [isMuted, setIsMuted] = useState(true);
 
     useEffect(() => {
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        document.body.appendChild(tag);
-
-        window.onYouTubeIframeAPIReady = () => {
-            playerRef.current = new window.YT.Player('kwontum-video', {
-                videoId: '64UqK4qLi1M',
-                playerVars: {
-                    autoplay: 1,
-                    playlist: '64UqK4qLi1M',
-                    mute: 1,
-                    controls: 0,
-                    showinfo: 0,
-                    modestbranding: 1,
-                    loop: 0,
-                    rel: 0,
-                    playsinline: 1,
-                    fs: 0,
-                    iv_load_policy: 3,
-                    disablekb: 1,
-                    width: '100%',
-                    height: '100%',
-                    // Mobile-specific optimizations
-                    enablejsapi: 1,
-                    origin: typeof window !== 'undefined' ? window.location.origin : ''
-                },
-                events: {
-                    onReady: (event) => {
-                        event.target.playVideo();
+        const loadPlayer = () => {
+            if (window.YT && window.YT.Player) {
+                playerRef.current = new window.YT.Player("kwontum-video", {
+                    videoId: "64UqK4qLi1M",
+                    playerVars: {
+                        autoplay: 1,
+                        playlist: "64UqK4qLi1M",
+                        mute: 1,
+                        controls: 0,
+                        showinfo: 0,
+                        modestbranding: 1,
+                        loop: 1,
+                        rel: 0,
+                        playsinline: 1,
+                        fs: 0,
+                        iv_load_policy: 3,
+                        disablekb: 1,
+                        width: "100%",
+                        height: "100%",
+                        enablejsapi: 1,
+                        origin: window.location.origin,
+                        start: 0,
+                        end: 38,
                     },
-                    onStateChange: (event) => {
-                        if (event.data === window.YT.PlayerState.PLAYING) {
-                            // Check every 500ms when playing
-                            const checkTime = () => {
-                                if (playerRef.current) {
-                                    const currentTime = playerRef.current.getCurrentTime();
-                                    if (currentTime >= 38) {
-                                        playerRef.current.seekTo(0, true);
-                                        playerRef.current.playVideo();
-                                    } else {
-                                        setTimeout(checkTime, 500);
-                                    }
-                                }
-                            };
-                            checkTime();
-                        }
-                    }
-                },
-            });
+                    events: {
+                        onReady: (event) => {
+                            event.target.playVideo();
+                        },
+                    },
+                });
+            }
         };
+
+        if (!window.YT) {
+            // Load the script only once
+            const tag = document.createElement("script");
+            tag.src = "https://www.youtube.com/iframe_api";
+            document.body.appendChild(tag);
+
+            window.onYouTubeIframeAPIReady = loadPlayer;
+        } else {
+            // API already available → just init player
+            loadPlayer();
+        }
 
         return () => {
-            playerRef.current = null;
+            if (playerRef.current) {
+                playerRef.current.stopVideo?.();
+                playerRef.current = null;
+            }
         };
     }, []);
+
 
     return (
         <>

@@ -62,6 +62,13 @@ export default function Header() {
               >
                 Meet Our Coaches
               </Link>
+              <Link
+                href="/school-holiday-programmes"
+                className="hover:text-kwontum-darkRed transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                School Holiday Programmes
+              </Link>
             </div>
           </div>
         )}
@@ -86,6 +93,12 @@ export default function Header() {
           className="nav-link hover:text-brand-secondary hover:scale-105 transition-colors duration-100"
         >
           Meet Our Coaches
+        </Link>
+                <Link
+          href="/school-holiday-programmes"
+          className="nav-link hover:text-brand-secondary hover:scale-105 transition-colors duration-100"
+        >
+          School Holiday Programmes
         </Link>
       </nav>
     </header>
