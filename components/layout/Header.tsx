@@ -361,24 +361,6 @@ const [user, setUser] = useState<AppUser | null>(null)
                 Logout
               </button>
             )}
-
-            {/* Login/Register links (if not logged in) */}
-            {!isLoggedIn && (
-              <div className="mt-8 pt-6 border-t">
-                <div className="space-y-3">
-                  <Link
-                    href="/login"
-                    className="block w-full text-center px-4 py-3 bg-kwontum-darkRed text-white rounded-lg hover:bg-[#5a1219] transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                  <p className="text-center text-sm text-gray-600">
-                    Admin accounts: Contact system administrator
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}
