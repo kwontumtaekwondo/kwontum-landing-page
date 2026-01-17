@@ -1,7 +1,7 @@
-// app/admin/jobs/create/page.tsx - SIMPLE VERSION
+// app/admin/jobs/create/page.tsx
 "use client";
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function CreateJobPage() {
@@ -17,6 +17,37 @@ export default function CreateJobPage() {
     credits: '2'
   })
 
+  // Add this useEffect at the top of your component
+  useEffect(() => {
+    const checkAdmin = () => {
+      try {
+        const token = localStorage.getItem('token')
+        const userStr = localStorage.getItem('user')
+
+        if (!token || !userStr) {
+          router.push('/login')
+          return
+        }
+
+        const user = JSON.parse(userStr)
+
+        if (!user.isAdmin) {
+          // Not admin - redirect to jobs page or home
+          router.push('/jobs')
+          return
+        }
+
+        // User is admin, continue loading
+        setLoading(false)
+
+      } catch (err) {
+        console.error('Error checking admin:', err)
+        router.push('/login')
+      }
+    }
+
+    checkAdmin()
+  }, [router])
   // Simple form change handler
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
