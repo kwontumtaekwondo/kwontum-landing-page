@@ -95,8 +95,10 @@ export default function JobsPage() {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
 
             if (!response.ok) {
@@ -136,8 +138,10 @@ export default function JobsPage() {
                 // THEN: Load jobs
                 const response = await fetch('/api/jobs', {
                     headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                        'Authorization': `Bearer ${token}`,
+                        'Cache-Control': 'no-cache',
+                    },
+                    cache: 'no-store'
                 })
 
                 if (!response.ok) {
@@ -214,8 +218,10 @@ export default function JobsPage() {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
 
             if (!response.ok) {
@@ -225,7 +231,11 @@ export default function JobsPage() {
 
             // Reload jobs
             const jobsResponse = await fetch('/api/jobs', {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
             const jobsData = await jobsResponse.json()
             setJobs(jobsData.jobs || [])
@@ -247,8 +257,10 @@ export default function JobsPage() {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
 
             if (!response.ok) {
@@ -260,7 +272,11 @@ export default function JobsPage() {
 
             // Reload jobs
             const jobsResponse = await fetch('/api/jobs', {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
             const jobsData = await jobsResponse.json()
             setJobs(jobsData.jobs || [])
@@ -277,8 +293,10 @@ export default function JobsPage() {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache',
                 },
+                cache: 'no-store',
                 body: JSON.stringify({ status: 'completed' })
             })
 
@@ -291,7 +309,11 @@ export default function JobsPage() {
 
             // Reload jobs
             const jobsResponse = await fetch('/api/jobs', {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
             const jobsData = await jobsResponse.json()
             setJobs(jobsData.jobs || [])
@@ -299,7 +321,11 @@ export default function JobsPage() {
             // Refresh user data if credits were awarded
             if (result.creditsAwarded) {
                 const userResponse = await fetch('/api/auth/me', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Cache-Control': 'no-cache',
+                    },
+                    cache: 'no-store'
                 })
                 if (userResponse.ok) {
                     const userData = await userResponse.json()
@@ -322,8 +348,10 @@ export default function JobsPage() {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache',
                 },
+                cache: 'no-store',
                 body: JSON.stringify({ status: 'incomplete' })
             })
 
@@ -334,7 +362,11 @@ export default function JobsPage() {
 
             // Reload jobs
             const jobsResponse = await fetch('/api/jobs', {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
             const jobsData = await jobsResponse.json()
             setJobs(jobsData.jobs || [])
@@ -352,8 +384,10 @@ export default function JobsPage() {
             const response = await fetch(`/api/jobs/${jobId}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
 
             if (!response.ok) {

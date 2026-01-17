@@ -30,10 +30,10 @@ export async function GET(request, { params }) {
 
     const userId = params.id
 
-    // Get user info
+    // Get user info including credit balance
     const { data: user, error: userError } = await supabaseServer
       .from('users')
-      .select('id, name, email, status')
+      .select('id, name, email, status, credit') // Added credit field
       .eq('id', userId)
       .single()
 
@@ -44,18 +44,17 @@ export async function GET(request, { params }) {
       )
     }
 
-    // Calculate current balance (sum of all transactions)
-    const { data: transactions } = await supabaseServer
+    // Use user.credit field as source of truth
+    const currentBalance = user?.credit || 0
+
+    // Calculate lifetime earned (only positive amounts)
+    const { data: positiveTransactions } = await supabaseServer
       .from('credit_transactions')
       .select('amount')
       .eq('user_id', userId)
+      .gt('amount', 0)
 
-    const currentBalance = transactions?.reduce((sum, t) => sum + t.amount, 0) || 0
-
-    // Calculate lifetime earned (only positive amounts)
-    const lifetimeEarned = transactions
-      ?.filter(t => t.amount > 0)
-      .reduce((sum, t) => sum + t.amount, 0) || 0
+    const lifetimeEarned = positiveTransactions?.reduce((sum, t) => sum + t.amount, 0) || 0
 
     // Calculate this month earned
     const now = new Date()
@@ -67,13 +66,25 @@ export async function GET(request, { params }) {
       .select('amount')
       .eq('user_id', userId)
       .gte('created_at', startOfMonthISO)
-      .gte('amount', 0)
+      .gt('amount', 0)
 
     const monthlyEarned = monthlyTransactions?.reduce((sum, t) => sum + t.amount, 0) || 0
 
     // Settings
     const requiredCredits = 8 // Monthly requirement
-    const nextDeductionDate = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString()
+    
+    // Calculate next deduction date (1st of next month)
+    let nextYear = now.getFullYear()
+    let nextMonth = now.getMonth() + 1
+    
+    // Handle December -> January wrap
+    if (nextMonth === 12) {
+      nextMonth = 0 // January is 0 in JS
+      nextYear += 1
+    }
+    
+    const nextDeductionDate = new Date(nextYear, nextMonth, 1).toISOString()
+    
     const creditsAfterDeduction = currentBalance - requiredCredits
     const isOnTrack = currentBalance >= requiredCredits
 
@@ -83,7 +94,7 @@ export async function GET(request, { params }) {
       monthlyEarned,
       requiredCredits,
       creditsAfterDeduction,
-      nextDeductionDate: nextDeductionDate,
+      nextDeductionDate,
       isOnTrack,
       user: {
         id: user.id,

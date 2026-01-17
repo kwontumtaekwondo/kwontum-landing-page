@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -79,8 +78,10 @@ export default function CreditsPage() {
             const token = localStorage.getItem('token')
             const response = await fetch('/api/credits/status', {
                 headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
 
             if (response.ok) {
@@ -97,8 +98,10 @@ export default function CreditsPage() {
             const token = localStorage.getItem('token')
             const response = await fetch(`/api/credits/transactions?page=${page}&limit=${pagination.limit}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
 
             if (response.ok) {

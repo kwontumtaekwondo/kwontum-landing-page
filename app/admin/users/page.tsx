@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
@@ -108,8 +107,10 @@ export default function AdminUsersPage() {
 
             const response = await fetch(`/api/admin/users?${params}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
 
             if (!response.ok) {

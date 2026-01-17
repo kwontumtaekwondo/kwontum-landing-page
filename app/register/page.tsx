@@ -2,11 +2,9 @@
 "use client";
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export default function RegisterPage() {
-  const router = useRouter()
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -79,7 +77,9 @@ export default function RegisterPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
         },
+        cache: 'no-store',
         body: JSON.stringify({
           name: form.name.trim(),
           email: form.email.trim().toLowerCase(),
@@ -96,9 +96,9 @@ export default function RegisterPage() {
       // Success! Store auth data in localStorage
       localStorage.setItem('token', data.token)
       localStorage.setItem('user', JSON.stringify(data.user))
-      
+
       setSuccess('Account created successfully! Redirecting to jobs page...')
-      
+
       // Clear form
       setForm({
         name: '',
@@ -106,10 +106,10 @@ export default function RegisterPage() {
         password: '',
         confirmPassword: ''
       })
-      
+
       // Redirect to /jobs after 1.5 seconds
       setTimeout(() => {
-        router.push('/jobs')
+        window.location.replace('/jobs')
       }, 1500)
 
     } catch (err) {
@@ -124,7 +124,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto">
-        
+
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold font-dolceVita text-kwontum-darkRed">
@@ -137,7 +137,7 @@ export default function RegisterPage() {
 
         {/* Form Card */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-          
+
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-6 sm:p-8">
             {/* General Error Message */}
@@ -191,9 +191,8 @@ export default function RegisterPage() {
                   value={form.name}
                   onChange={handleChange}
                   disabled={loading}
-                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kwontum-darkRed focus:border-transparent sm:text-sm ${
-                    errors.name ? 'border-red-300' : 'border-gray-300'
-                  }`}
+                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kwontum-darkRed focus:border-transparent sm:text-sm ${errors.name ? 'border-red-300' : 'border-gray-300'
+                    }`}
                   placeholder="John Doe"
                 />
               </div>
@@ -227,9 +226,8 @@ export default function RegisterPage() {
                   value={form.email}
                   onChange={handleChange}
                   disabled={loading}
-                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kwontum-darkRed focus:border-transparent sm:text-sm ${
-                    errors.email ? 'border-red-300' : 'border-gray-300'
-                  }`}
+                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kwontum-darkRed focus:border-transparent sm:text-sm ${errors.email ? 'border-red-300' : 'border-gray-300'
+                    }`}
                   placeholder="you@example.com"
                 />
               </div>
@@ -262,9 +260,8 @@ export default function RegisterPage() {
                   value={form.password}
                   onChange={handleChange}
                   disabled={loading}
-                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kwontum-darkRed focus:border-transparent sm:text-sm ${
-                    errors.password ? 'border-red-300' : 'border-gray-300'
-                  }`}
+                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kwontum-darkRed focus:border-transparent sm:text-sm ${errors.password ? 'border-red-300' : 'border-gray-300'
+                    }`}
                   placeholder="••••••••"
                 />
               </div>
@@ -300,9 +297,8 @@ export default function RegisterPage() {
                   value={form.confirmPassword}
                   onChange={handleChange}
                   disabled={loading}
-                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kwontum-darkRed focus:border-transparent sm:text-sm ${
-                    errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
-                  }`}
+                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-kwontum-darkRed focus:border-transparent sm:text-sm ${errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+                    }`}
                   placeholder="••••••••"
                 />
               </div>
@@ -354,7 +350,7 @@ export default function RegisterPage() {
                 </Link>
               </p>
             </div>
-            
+
             <div className="mt-4 pt-4 border-t border-gray-200 text-center">
               <Link
                 href="/"

@@ -4,22 +4,32 @@ import { supabaseServer } from '@/lib/supabase-server'
 import { hashPassword } from '@/lib/auth-utils'
 import { isOTPExpired } from '@/lib/otp-utils'
 
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
+export const revalidate = 0
+
 export async function POST(request) {
   try {
     const { email, otpCode, newPassword } = await request.json()
+
+    const noCacheHeaders = {
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    }
 
     // Validation
     if (!email || !otpCode || !newPassword) {
       return NextResponse.json(
         { error: 'Email, OTP code, and new password are required' },
-        { status: 400 }
+        { status: 400, headers: noCacheHeaders }
       )
     }
 
     if (newPassword.length < 6) {
       return NextResponse.json(
         { error: 'Password must be at least 6 characters' },
-        { status: 400 }
+        { status: 400, headers: noCacheHeaders }
       )
     }
 
@@ -33,7 +43,7 @@ export async function POST(request) {
     if (userError || !user) {
       return NextResponse.json(
         { error: 'Invalid email or OTP code' },
-        { status: 400 }
+        { status: 400, headers: noCacheHeaders }
       )
     }
 
@@ -41,7 +51,7 @@ export async function POST(request) {
     if (user.status !== 'active') {
       return NextResponse.json(
         { error: 'Account is locked. Please contact support.' },
-        { status: 403 }
+        { status: 403, headers: noCacheHeaders }
       )
     }
 
@@ -59,7 +69,7 @@ export async function POST(request) {
     if (otpError || !otpRecord) {
       return NextResponse.json(
         { error: 'Invalid or expired OTP code' },
-        { status: 400 }
+        { status: 400, headers: noCacheHeaders }
       )
     }
 
@@ -67,7 +77,7 @@ export async function POST(request) {
     if (isOTPExpired(otpRecord.expires_at)) {
       return NextResponse.json(
         { error: 'OTP code has expired. Please request a new one.' },
-        { status: 400 }
+        { status: 400, headers: noCacheHeaders }
       )
     }
 
@@ -84,7 +94,7 @@ export async function POST(request) {
       console.error('Error marking OTP as used:', markUsedError)
       return NextResponse.json(
         { error: 'Failed to process reset request' },
-        { status: 500 }
+        { status: 500, headers: noCacheHeaders }
       )
     }
 
@@ -103,7 +113,7 @@ export async function POST(request) {
       console.error('Error updating password:', updateError)
       return NextResponse.json(
         { error: 'Failed to reset password' },
-        { status: 500 }
+        { status: 500, headers: noCacheHeaders }
       )
     }
 
@@ -112,13 +122,39 @@ export async function POST(request) {
     return NextResponse.json({
       success: true,
       message: 'Password has been reset successfully. You can now login with your new password.'
-    })
+    }, { headers: noCacheHeaders })
 
   } catch (error) {
     console.error('Reset password error:', error)
+    
+    // Better error handling for network/DNS issues
+    if (error.message?.includes('fetch failed') || error.message?.includes('EAI_AGAIN') || error.cause?.code === 'EAI_AGAIN') {
+      return NextResponse.json(
+        { 
+          error: 'Database connection failed. Please check your network connection and try again.',
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        },
+        { 
+          status: 503,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        }
+      )
+    }
+    
     return NextResponse.json(
       { error: 'An unexpected error occurred. Please try again.' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
     )
   }
 }

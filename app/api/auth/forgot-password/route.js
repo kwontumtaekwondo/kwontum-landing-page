@@ -4,6 +4,10 @@ import { supabaseServer } from '@/lib/supabase-server'
 import { generateOTP, generateExpirationTime, cleanupExpiredOTPs } from '@/lib/otp-utils'
 import { sendPasswordResetEmail } from '@/lib/email-service'
 
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
+export const revalidate = 0
+
 export async function POST(request) {
   try {
     const { email } = await request.json()
@@ -12,7 +16,14 @@ export async function POST(request) {
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       return NextResponse.json(
         { error: 'Please provide a valid email address' },
-        { status: 400 }
+        { 
+          status: 400,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        }
       )
     }
 
@@ -31,6 +42,12 @@ export async function POST(request) {
       return NextResponse.json({
         success: true,
         message: 'If an account exists with this email, you will receive a password reset code.'
+      }, {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
       })
     }
 
@@ -39,7 +56,14 @@ export async function POST(request) {
       return NextResponse.json({
         success: false,
         error: 'This account is currently locked. Please contact support.'
-      }, { status: 403 })
+      }, { 
+        status: 403,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      })
     }
 
     // Rate limiting: Check recent OTP requests
@@ -56,7 +80,14 @@ export async function POST(request) {
       return NextResponse.json({
         success: false,
         error: 'Please wait 2 minutes before requesting another code.'
-      }, { status: 429 })
+      }, { 
+        status: 429,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      })
     }
 
     // Generate OTP
@@ -77,7 +108,14 @@ export async function POST(request) {
       console.error('Database error storing OTP:', otpError)
       return NextResponse.json(
         { error: 'Failed to generate reset code' },
-        { status: 500 }
+        { 
+          status: 500,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        }
       )
     }
 
@@ -100,7 +138,14 @@ export async function POST(request) {
 
       return NextResponse.json(
         { error: 'Failed to send reset email. Please try again later.' },
-        { status: 500 }
+        { 
+          status: 500,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        }
       )
     }
 
@@ -118,13 +163,45 @@ export async function POST(request) {
       message: 'Password reset code sent to your email.',
       // For development/testing only
       ...(process.env.NODE_ENV === 'development' && { debug: { otpCode } })
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
     })
 
   } catch (error) {
     console.error('Forgot password endpoint error:', error)
+    
+    // Better error handling for network/DNS issues
+    if (error.message?.includes('fetch failed') || error.message?.includes('EAI_AGAIN') || error.cause?.code === 'EAI_AGAIN') {
+      return NextResponse.json(
+        { 
+          error: 'Database connection failed. Please check your network connection and try again.',
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        },
+        { 
+          status: 503,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        }
+      )
+    }
+    
     return NextResponse.json(
       { error: 'An unexpected error occurred. Please try again.' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
     )
   }
 }

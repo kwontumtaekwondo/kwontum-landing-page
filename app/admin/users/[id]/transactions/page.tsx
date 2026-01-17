@@ -7,7 +7,6 @@ import {
     CreditCard,
     History,
     Calendar,
-    Briefcase,
     TrendingUp,
     Clock,
     ArrowUpRight,
@@ -119,8 +118,10 @@ export default function AdminUserTransactionsPage() {
             const token = localStorage.getItem('token')
             const response = await fetch(`/api/admin/users/${userId}/credits/transactions?page=${page}&limit=${pagination.limit}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
             })
 
             if (response.ok) {
@@ -492,15 +493,6 @@ export default function AdminUserTransactionsPage() {
                                                     {transaction.amount > 0 ? '+' : ''}{transaction.amount} credits
                                                 </p>
                                                 <p className="text-sm text-gray-600">{transaction.reason}</p>
-                                                {transaction.job && (
-                                                    <Link
-                                                        href={`/admin/jobs/${transaction.job.id}`}
-                                                        className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 mt-1"
-                                                    >
-                                                        <Briefcase className="h-3 w-3" />
-                                                        {transaction.job.title}
-                                                    </Link>
-                                                )}
                                                 <p className="text-xs text-gray-500 mt-1">
                                                     {formatDate(transaction.created_at)}
                                                 </p>

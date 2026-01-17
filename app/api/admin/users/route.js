@@ -9,10 +9,16 @@ export async function GET(request) {
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     const decoded = verifyToken(token)
     
+    const noCacheHeaders = {
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    }
+
     if (!decoded) {
       return NextResponse.json(
         { error: 'Authentication required' },
-        { status: 401 }
+        { status: 401, headers: noCacheHeaders }
       )
     }
 
@@ -26,7 +32,7 @@ export async function GET(request) {
     if (!adminUser?.is_admin) {
       return NextResponse.json(
         { error: 'Admin access required' },
-        { status: 403 }
+        { status: 403, headers: noCacheHeaders }
       )
     }
 
@@ -64,7 +70,14 @@ export async function GET(request) {
       console.error('Error fetching users:', error)
       return NextResponse.json(
         { error: 'Failed to fetch users' },
-        { status: 500 }
+        { 
+          status: 500,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        }
       )
     }
 
@@ -119,13 +132,20 @@ export async function GET(request) {
         totalUsers: count || 0,
         limit
       }
-    })
+    }, { headers: noCacheHeaders })
 
   } catch (error) {
     console.error('Get users error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
     )
   }
 }

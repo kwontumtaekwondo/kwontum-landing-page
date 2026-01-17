@@ -5,6 +5,13 @@ import { verifyToken } from '@/lib/jwt'
 
 export const dynamic = 'force-dynamic';
 
+// Define cache control headers once to reuse
+const noCacheHeaders = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+  'Pragma': 'no-cache',
+  'Expires': '0'
+};
+
 // GET: Get all jobs (for jobs page)
 export async function GET(request) {
   try {
@@ -49,17 +56,31 @@ export async function GET(request) {
       console.error('Error fetching jobs:', error)
       return NextResponse.json(
         { error: 'Failed to fetch jobs' },
-        { status: 500 }
+        { 
+          status: 500,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        }
       )
     }
 
-    return NextResponse.json({ jobs })
+    return NextResponse.json({ jobs }, { headers: noCacheHeaders })
     
   } catch (error) {
     console.error('GET jobs error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
     )
   }
 }
@@ -67,6 +88,12 @@ export async function GET(request) {
 // POST: Create a new job (admin only)
 export async function POST(request) {
   try {
+    const noCacheHeaders = {
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    }
+
     // Verify token
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     const decoded = verifyToken(token)
@@ -74,7 +101,7 @@ export async function POST(request) {
     if (!decoded) {
       return NextResponse.json(
         { error: 'Authentication required' },
-        { status: 401 }
+        { status: 401, headers: noCacheHeaders }
       )
     }
 
@@ -88,7 +115,7 @@ export async function POST(request) {
     if (userError || !user?.is_admin) {
       return NextResponse.json(
         { error: 'Admin access required' },
-        { status: 403 }
+        { status: 403, headers: noCacheHeaders }
       )
     }
 
@@ -98,14 +125,14 @@ export async function POST(request) {
     if (!title || !details || !jobDate || !credits) {
       return NextResponse.json(
         { error: 'Title, details, job date, and credits are required' },
-        { status: 400 }
+        { status: 400, headers: noCacheHeaders }
       )
     }
 
     if (credits < 1) {
       return NextResponse.json(
         { error: 'Credits must be at least 1' },
-        { status: 400 }
+        { status: 400, headers: noCacheHeaders }
       )
     }
 
@@ -113,7 +140,7 @@ export async function POST(request) {
     if (isNaN(jobDateObj.getTime())) {
       return NextResponse.json(
         { error: 'Invalid job date' },
-        { status: 400 }
+        { status: 400, headers: noCacheHeaders }
       )
     }
 
@@ -138,7 +165,7 @@ export async function POST(request) {
       console.error('Error creating job:', jobError)
       return NextResponse.json(
         { error: 'Failed to create job' },
-        { status: 500 }
+        { status: 500, headers: noCacheHeaders }
       )
     }
 
@@ -146,13 +173,20 @@ export async function POST(request) {
       success: true,
       message: 'Job created successfully',
       job
-    }, { status: 201 })
+    }, { status: 201, headers: noCacheHeaders })
 
   } catch (error) {
     console.error('POST jobs error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
     )
   }
 }

@@ -8,6 +8,10 @@ import { ensureAdminExists } from '@/lib/startup-check'
 
 ensureAdminExists()
 
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
+export const revalidate = 0
+
 export async function POST(request) {
   try {
     const { name, email, password } = await request.json()
@@ -86,13 +90,46 @@ export async function POST(request) {
       success: true,
       message: 'Account created successfully!',
       ...authResponse
-    }, { status: 201 })
+    }, { 
+      status: 201,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    })
 
   } catch (error) {
     console.error('Registration error:', error)
+    
+    // Better error handling for network/DNS issues
+    if (error.message?.includes('fetch failed') || error.message?.includes('EAI_AGAIN') || error.cause?.code === 'EAI_AGAIN') {
+      return NextResponse.json(
+        { 
+          error: 'Database connection failed. Please check your network connection and try again.',
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        },
+        { 
+          status: 503,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        }
+      )
+    }
+    
     return NextResponse.json(
       { error: 'An unexpected error occurred. Please try again.' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
     )
   }
 }

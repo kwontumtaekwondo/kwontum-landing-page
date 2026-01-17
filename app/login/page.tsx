@@ -1,7 +1,7 @@
 // app/login/page.tsx
 "use client";
-
-import { useState } from 'react'
+export const dynamic = 'force-dynamic'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import AuthClient from '@/lib/auth-client'
@@ -25,7 +25,9 @@ export default function LoginPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
         },
+        cache: 'no-store',
         body: JSON.stringify({
           email: form.email.trim().toLowerCase(),
           password: form.password
@@ -53,7 +55,19 @@ export default function LoginPage() {
       setLoading(false)
     }
   }
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('token')
+      const user = localStorage.getItem('user')
 
+      if (token && user) {
+        // User is already logged in, redirect to jobs
+        router.push('/jobs')
+      }
+    }
+
+    checkAuth()
+  }, [router])
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-6">
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
