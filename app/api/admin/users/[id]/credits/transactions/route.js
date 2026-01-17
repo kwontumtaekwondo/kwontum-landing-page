@@ -3,12 +3,15 @@ import { NextResponse } from 'next/server'
 import { supabaseServer } from '@/lib/supabase-server'
 import { verifyToken } from '@/lib/jwt'
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
+export const revalidate = 0
 
 const noCacheHeaders = {
-  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
   'Pragma': 'no-cache',
-  'Expires': '0'
+  'Expires': '0',
+  'X-Vercel-Cache-Control': 'no-store'
 };
 
 export async function GET(request, { params }) {
@@ -60,25 +63,14 @@ export async function GET(request, { params }) {
     }
 
     // Call the RPC function
-    // Update your RPC call to include cache control
+    // Note: Route segment config (dynamic, fetchCache, revalidate) handles caching
     const { data, error } = await supabaseServer
-      .rpc(
-        'get_user_credit_transactions',
-        {
-          p_user_id: userId,
-          p_page: page,
-          p_limit: limit,
-          p_admin_user_id: decoded.sub
-        },
-        {
-          headers: {
-            'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-          },
-          cache: 'no-store'
-        }
-      )
+      .rpc('get_user_credit_transactions', {
+        p_user_id: userId,
+        p_page: page,
+        p_limit: limit,
+        p_admin_user_id: decoded.sub
+      })
 
     if (error) {
       console.error('RPC function error:', error)

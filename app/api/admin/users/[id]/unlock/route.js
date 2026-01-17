@@ -2,7 +2,16 @@ import { NextResponse } from 'next/server'
 import { supabaseServer } from '@/lib/supabase-server'
 import { verifyToken } from '@/lib/jwt'
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
+export const revalidate = 0
+
+const noCacheHeaders = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+  'Pragma': 'no-cache',
+  'Expires': '0',
+  'X-Vercel-Cache-Control': 'no-store'
+}
 
 export async function POST(request, { params }) {
   try {
@@ -12,7 +21,7 @@ export async function POST(request, { params }) {
     if (!decoded) {
       return NextResponse.json(
         { error: 'Authentication required' },
-        { status: 401 }
+        { status: 401, headers: noCacheHeaders }
       )
     }
 
@@ -26,7 +35,7 @@ export async function POST(request, { params }) {
     if (!adminUser?.is_admin) {
       return NextResponse.json(
         { error: 'Admin access required' },
-        { status: 403 }
+        { status: 403, headers: noCacheHeaders }
       )
     }
 
@@ -89,13 +98,13 @@ export async function POST(request, { params }) {
       success: true,
       message: `Account unlocked successfully for ${user.name}`,
       data: result
-    })
+    }, { headers: noCacheHeaders })
 
   } catch (error) {
     console.error('Unlock account error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 500, headers: noCacheHeaders }
     )
   }
 }
