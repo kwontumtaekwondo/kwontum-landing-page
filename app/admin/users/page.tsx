@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import {
     Users,
@@ -59,7 +60,7 @@ export default function AdminUsersPage() {
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState<string>('all')
     const [selectedUser, setSelectedUser] = useState<User | null>(null)
-    const [showActionsMenu, setShowActionsMenu] = useState<string | null>(null)
+    const [dropdownPosition, setDropdownPosition] = useState<{x: number, y: number, userId: string} | null>(null)
     const [showAdjustCreditsModal, setShowAdjustCreditsModal] = useState(false)
     const [showLockModal, setShowLockModal] = useState(false)
     const [showUnlockModal, setShowUnlockModal] = useState(false)
@@ -68,6 +69,28 @@ export default function AdminUsersPage() {
     const [actionLoading, setActionLoading] = useState(false)
     const [successMessage, setSuccessMessage] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownPosition) {
+                const portalElement = document.getElementById('dropdown-portal')
+                if (portalElement && !portalElement.contains(event.target as Node)) {
+                    setDropdownPosition(null)
+                }
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [dropdownPosition])
+
+    // Close dropdown when modals open
+    useEffect(() => {
+        if (showAdjustCreditsModal || showLockModal || showUnlockModal) {
+            setDropdownPosition(null)
+        }
+    }, [showAdjustCreditsModal, showLockModal, showUnlockModal])
 
     const loadUsers = useCallback(async () => {
         try {
@@ -109,12 +132,12 @@ export default function AdminUsersPage() {
         } finally {
             setLoading(false)
         }
-    }, [pagination.currentPage, pagination.limit, searchTerm, statusFilter, router]) // Added pagination.currentPage and pagination.limit
+    }, [pagination.currentPage, pagination.limit, searchTerm, statusFilter, router])
 
     // Load users on component mount
     useEffect(() => {
         loadUsers()
-    }, [loadUsers]) // Now only depends on loadUsers
+    }, [loadUsers])
 
     const handlePageChange = (page: number) => {
         if (page < 1 || page > pagination.totalPages) return
@@ -271,6 +294,9 @@ export default function AdminUsersPage() {
             return () => clearTimeout(timer)
         }
     }, [successMessage, errorMessage])
+
+    // Get the current user for the dropdown
+    const currentDropdownUser = dropdownPosition ? users.find(u => u.id === dropdownPosition.userId) : null
 
     return (
         <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -719,70 +745,23 @@ export default function AdminUsersPage() {
                                                 <td className="px-6 py-4">
                                                     <div className="relative">
                                                         <button
-                                                            onClick={() => setShowActionsMenu(showActionsMenu === user.id ? null : user.id)}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                const rect = e.currentTarget.getBoundingClientRect()
+                                                                if (dropdownPosition?.userId === user.id) {
+                                                                    setDropdownPosition(null)
+                                                                } else {
+                                                                    setDropdownPosition({
+                                                                        x: rect.right,
+                                                                        y: rect.bottom,
+                                                                        userId: user.id
+                                                                    })
+                                                                }
+                                                            }}
                                                             className="p-2 hover:bg-gray-100 rounded-lg"
                                                         >
                                                             <MoreVertical className="h-5 w-5 text-gray-400" />
                                                         </button>
-
-                                                        {showActionsMenu === user.id && (
-                                                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">
-                                                                <div className="py-1">
-                                                                    <button
-                                                                        onClick={() => {
-                                                                            viewUserTransactions(user.id)
-                                                                            setShowActionsMenu(null)
-                                                                        }}
-                                                                        className="flex items-center gap-2 w-full px-4 py-2 text-sm hover:bg-gray-100"
-                                                                    >
-                                                                        <Eye className="h-4 w-4" />
-                                                                        View Transactions
-                                                                    </button>
-
-                                                                    {!user.is_admin && (
-                                                                        <>
-                                                                            <button
-                                                                                onClick={() => {
-                                                                                    setSelectedUser(user)
-                                                                                    setShowAdjustCreditsModal(true)
-                                                                                    setShowActionsMenu(null)
-                                                                                }}
-                                                                                className="flex items-center gap-2 w-full px-4 py-2 text-sm hover:bg-gray-100"
-                                                                            >
-                                                                                <CreditCard className="h-4 w-4" />
-                                                                                Adjust Credits
-                                                                            </button>
-
-                                                                            {user.status === 'active' ? (
-                                                                                <button
-                                                                                    onClick={() => {
-                                                                                        setSelectedUser(user)
-                                                                                        setShowLockModal(true)
-                                                                                        setShowActionsMenu(null)
-                                                                                    }}
-                                                                                    className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                                                                                >
-                                                                                    <Lock className="h-4 w-4" />
-                                                                                    Lock Account
-                                                                                </button>
-                                                                            ) : (
-                                                                                <button
-                                                                                    onClick={() => {
-                                                                                        setSelectedUser(user)
-                                                                                        setShowUnlockModal(true)
-                                                                                        setShowActionsMenu(null)
-                                                                                    }}
-                                                                                    className="flex items-center gap-2 w-full px-4 py-2 text-sm text-green-600 hover:bg-gray-100"
-                                                                                >
-                                                                                    <Unlock className="h-4 w-4" />
-                                                                                    Unlock Account
-                                                                                </button>
-                                                                            )}
-                                                                        </>
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -853,6 +832,82 @@ export default function AdminUsersPage() {
                     )}
                 </div>
             </div>
+
+            {/* Dropdown Portal */}
+            {dropdownPosition && typeof document !== 'undefined' && createPortal(
+                <div 
+                    id="dropdown-portal"
+                    className="fixed z-[9999] w-48 bg-white rounded-lg shadow-xl border max-h-64 overflow-y-auto"
+                    style={{
+                        top: `${Math.min(dropdownPosition.y, window.innerHeight - 200)}px`,
+                        left: `${Math.max(dropdownPosition.x - 192, 10)}px`,
+                    }}
+                >
+                    <div className="py-1">
+                        {currentDropdownUser && (
+                            <>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        viewUserTransactions(currentDropdownUser.id)
+                                        setDropdownPosition(null)
+                                    }}
+                                    className="flex items-center gap-2 w-full px-4 py-2 text-sm hover:bg-gray-100 text-left"
+                                >
+                                    <Eye className="h-4 w-4" />
+                                    View Transactions
+                                </button>
+
+                                {!currentDropdownUser.is_admin && (
+                                    <>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                setSelectedUser(currentDropdownUser)
+                                                setShowAdjustCreditsModal(true)
+                                                setDropdownPosition(null)
+                                            }}
+                                            className="flex items-center gap-2 w-full px-4 py-2 text-sm hover:bg-gray-100 text-left"
+                                        >
+                                            <CreditCard className="h-4 w-4" />
+                                            Adjust Credits
+                                        </button>
+
+                                        {currentDropdownUser.status === 'active' ? (
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    setSelectedUser(currentDropdownUser)
+                                                    setShowLockModal(true)
+                                                    setDropdownPosition(null)
+                                                }}
+                                                className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 text-left"
+                                            >
+                                                <Lock className="h-4 w-4" />
+                                                Lock Account
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    setSelectedUser(currentDropdownUser)
+                                                    setShowUnlockModal(true)
+                                                    setDropdownPosition(null)
+                                                }}
+                                                className="flex items-center gap-2 w-full px-4 py-2 text-sm text-green-600 hover:bg-gray-100 text-left"
+                                            >
+                                                <Unlock className="h-4 w-4" />
+                                                Unlock Account
+                                            </button>
+                                        )}
+                                    </>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </div>,
+                document.body
+            )}
 
             {/* Animation style */}
             <style jsx>{`

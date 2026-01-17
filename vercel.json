@@ -1,0 +1,9 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/monthly-deduction",
+      "schedule": "0 0 1 * *",
+      "timeZone": "Asia/Singapore"
+    }
+  ]
+}
