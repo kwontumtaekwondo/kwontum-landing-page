@@ -5,86 +5,79 @@ const CRON_SECRET = process.env.CRON_SECRET
 
 export async function POST(request) {
   try {
-    // Verify the request is from Vercel Cron (or has the correct secret)
+    // Log incoming request for debugging
+    console.log('📥 Monthly deduction called')
+    console.log('🔐 Auth header:', request.headers.get('authorization') ? 'Present' : 'Missing')
+    
+    // Vercel Cron sends: Authorization: Bearer YOUR_CRON_SECRET
     const authHeader = request.headers.get('authorization')
     
-    // Option 1: Check for Vercel Cron signature (recommended)
-    const cronSignature = request.headers.get('x-vercel-cron')
-    const isFromVercelCron = cronSignature === 'true'
-    
-    // Option 2: Check for secret token
-    const hasValidAuth = authHeader === `Bearer ${CRON_SECRET}`
-    
-    // Allow either Vercel Cron or valid auth token
-    if (!isFromVercelCron && !hasValidAuth) {
+    if (!authHeader?.startsWith('Bearer ')) {
+      console.log('❌ Invalid auth format')
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized - No Bearer token' },
+        { status: 401 }
+      )
+    }
+    
+    const token = authHeader.replace('Bearer ', '')
+    
+    // Vercel sets the CRON_SECRET as the token
+    if (token !== CRON_SECRET) {
+      console.log('❌ Token mismatch')
+      console.log('Expected:', CRON_SECRET?.substring(0, 3) + '...')
+      console.log('Received:', token.substring(0, 3) + '...')
+      return NextResponse.json(
+        { error: 'Unauthorized - Invalid token' },
         { status: 401 }
       )
     }
 
-    // Log the execution (for monitoring)
-    console.log('🚀 Monthly deduction cron job started at:', new Date().toISOString())
+    console.log('✅ Authorization successful')
+    console.log('🚀 Starting monthly deduction at:', new Date().toISOString())
     
     // Execute the deduction
     const { data, error } = await supabaseServer
-      .rpc('deduct_monthly_credits', {
-        secret_key: CRON_SECRET
-      })
+      .rpc('deduct_monthly_credits')
 
     if (error) {
-      console.error('❌ Error executing monthly deduction:', error)
+      console.error('❌ Supabase RPC error:', error)
       return NextResponse.json(
-        { error: 'Failed to process monthly deductions', details: error.message },
+        { error: 'Database error', details: error.message },
         { status: 500 }
       )
     }
 
-    // Check if the RPC function returned an error
-    if (data?.error) {
-      console.error('❌ RPC function error:', data.error)
-      return NextResponse.json(
-        { error: data.error },
-        { status: 500 }
-      )
-    }
-
-    const response = {
-      success: true,
-      message: 'Monthly deductions processed successfully',
-      timestamp: new Date().toISOString(),
-      execution_time: new Date().toISOString(),
-      month: new Date().getMonth() + 1,
-      year: new Date().getFullYear(),
-      ...data
-    }
-
-    console.log('✅ Monthly deduction completed:', response)
+    console.log('✅ Monthly deduction completed:', data)
     
-    return NextResponse.json(response)
+    return NextResponse.json({
+      success: true,
+      message: 'Monthly deductions processed',
+      timestamp: new Date().toISOString(),
+      data: data
+    })
 
   } catch (error) {
-    console.error('❌ Monthly deduction unhandled error:', error)
+    console.error('❌ Unhandled error:', error)
     return NextResponse.json(
-      { error: 'Internal server error', details: error.message },
+      { error: 'Internal error', details: error.message },
       { status: 500 }
     )
   }
 }
 
-// Also allow GET requests for testing
+// Keep GET for manual testing
 export async function GET(request) {
-  // Check for secret token in query params for testing
   const url = new URL(request.url)
   const secret = url.searchParams.get('secret')
   
   if (secret !== CRON_SECRET) {
     return NextResponse.json(
-      { error: 'Unauthorized. Use ?secret=YOUR_CRON_SECRET' },
+      { error: 'Add ?secret=YOUR_CRON_SECRET' },
       { status: 401 }
     )
   }
   
-  // Call the POST handler
+  console.log('🧪 Manual test via GET')
   return POST(request)
 }
