@@ -17,7 +17,7 @@ export async function GET(request) {
   try {
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     const decoded = verifyToken(token)
-    
+
     if (!decoded) {
       return NextResponse.json(
         { error: 'Authentication required' },
@@ -29,13 +29,24 @@ export async function GET(request) {
     const status = searchParams.get('status')
     const userId = searchParams.get('userId')
 
-    // Call the non-paginated RPC function
+    // Call the non-paginated RPC function with no cache
     const { data, error } = await supabaseServer
-      .rpc('get_filtered_jobs', {
-        p_user_id: decoded.sub,
-        p_status_filter: status,
-        p_user_filter: userId
-      })
+      .rpc(
+        'get_filtered_jobs',
+        {
+          p_user_id: decoded.sub,
+          p_status_filter: status,
+          p_user_filter: userId
+        },
+        {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          },
+          cache: 'no-store'
+        }
+      )
 
     if (error) {
       console.error('RPC function error:', error)
@@ -68,11 +79,11 @@ export async function GET(request) {
       } : undefined
     }))
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       jobs: formattedJobs,
       total: formattedJobs.length
     }, { headers: noCacheHeaders })
-    
+
   } catch (error) {
     console.error('GET jobs error:', error)
     return NextResponse.json(
@@ -94,7 +105,7 @@ export async function POST(request) {
     // Verify token
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     const decoded = verifyToken(token)
-    
+
     if (!decoded) {
       return NextResponse.json(
         { error: 'Authentication required' },
@@ -176,7 +187,7 @@ export async function POST(request) {
     console.error('POST jobs error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
-      { 
+      {
         status: 500,
         headers: {
           'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',

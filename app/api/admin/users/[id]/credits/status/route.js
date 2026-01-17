@@ -15,7 +15,7 @@ export async function GET(request, { params }) {
   try {
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     const decoded = verifyToken(token)
-    
+
     if (!decoded) {
       return NextResponse.json(
         { error: 'Authentication required' },
@@ -38,7 +38,7 @@ export async function GET(request, { params }) {
     }
 
     const userId = params.id
-    
+
     // Validate user ID format
     if (!userId || typeof userId !== 'string' || userId.length < 36) {
       return NextResponse.json(
@@ -48,11 +48,23 @@ export async function GET(request, { params }) {
     }
 
     // Call the RPC function
+    // Call the RPC function with no cache
     const { data, error } = await supabaseServer
-      .rpc('get_user_credits_status', {
-        p_user_id: userId,
-        p_admin_user_id: decoded.sub
-      })
+      .rpc(
+        'get_user_credits_status',
+        {
+          p_user_id: userId,
+          p_admin_user_id: decoded.sub
+        },
+        {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          },
+          cache: 'no-store'
+        }
+      )
 
     if (error) {
       console.error('RPC function error:', error)

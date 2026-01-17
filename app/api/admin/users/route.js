@@ -10,7 +10,7 @@ export async function GET(request) {
   try {
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     const decoded = verifyToken(token)
-    
+
     const noCacheHeaders = {
       'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0',
       'Pragma': 'no-cache',
@@ -48,18 +48,29 @@ export async function GET(request) {
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '20')
 
-    // Call RPC function to get users with stats
+    // Call RPC function to get users with stats with no cache
     const { data: usersWithStats, error: rpcError } = await supabaseServer
-      .rpc('get_users_with_stats', {
-        search_text: search || null,
-        user_status: status || null,
-        page_num: page,
-        page_size: limit
-      })
+      .rpc(
+        'get_users_with_stats',
+        {
+          search_text: search || null,
+          user_status: status || null,
+          page_num: page,
+          page_size: limit
+        },
+        {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          },
+          cache: 'no-store'
+        }
+      )
 
     if (rpcError) {
       console.error('RPC Error:', rpcError)
-      
+
       // Fallback to original method if RPC fails
       console.log('Falling back to original method...')
       return await fallbackMethod(request, search, status, page, limit, noCacheHeaders)
@@ -78,7 +89,7 @@ export async function GET(request) {
     }
 
     const { count, error: countError } = await query
-    
+
     if (countError) {
       console.error('Count error:', countError)
     }
@@ -100,12 +111,12 @@ export async function GET(request) {
   } catch (error) {
     console.error('Get users error:', error)
     return NextResponse.json(
-      { 
+      {
         error: 'Internal server error',
         details: error.message,
         timestamp: new Date().toISOString()
       },
-      { 
+      {
         status: 500,
         headers: {
           'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
@@ -147,7 +158,7 @@ async function fallbackMethod(request, search, status, page, limit, headers) {
     console.error('Error fetching users:', error)
     return NextResponse.json(
       { error: 'Failed to fetch users' },
-      { 
+      {
         status: 500,
         headers
       }
@@ -156,14 +167,14 @@ async function fallbackMethod(request, search, status, page, limit, headers) {
 
   // Get job statistics for all users in one query
   const userIds = users.map(user => user.id)
-  
+
   let jobStats = {}
   if (userIds.length > 0) {
     const { data: statsData, error: statsError } = await supabaseServer
       .from('jobs')
       .select('accepted_by, status')
       .in('accepted_by', userIds)
-    
+
     if (!statsError && statsData) {
       // Process stats
       statsData.forEach(job => {
@@ -174,9 +185,9 @@ async function fallbackMethod(request, search, status, page, limit, headers) {
             totalJobs: 0
           }
         }
-        
+
         jobStats[job.accepted_by].totalJobs++
-        
+
         if (job.status === 'booked' || job.status === 'in_progress') {
           jobStats[job.accepted_by].activeJobs++
         } else if (job.status === 'completed') {

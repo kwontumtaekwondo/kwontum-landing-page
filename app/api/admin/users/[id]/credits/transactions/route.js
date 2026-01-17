@@ -15,7 +15,7 @@ export async function GET(request, { params }) {
   try {
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     const decoded = verifyToken(token)
-    
+
     if (!decoded) {
       return NextResponse.json(
         { error: 'Authentication required' },
@@ -38,7 +38,7 @@ export async function GET(request, { params }) {
     }
 
     const userId = params.id
-    
+
     // Validate user ID format
     if (!userId || typeof userId !== 'string' || userId.length < 36) {
       return NextResponse.json(
@@ -50,7 +50,7 @@ export async function GET(request, { params }) {
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '10')
-    
+
     // Validate pagination parameters
     if (page < 1 || limit < 1 || limit > 100) {
       return NextResponse.json(
@@ -60,17 +60,23 @@ export async function GET(request, { params }) {
     }
 
     // Call the RPC function
+    // Update your RPC call to include cache control
     const { data, error } = await supabaseServer
       .rpc('get_user_credit_transactions', {
         p_user_id: userId,
         p_page: page,
         p_limit: limit,
         p_admin_user_id: decoded.sub
+      }, {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
+        }
       })
 
     if (error) {
       console.error('RPC function error:', error)
-      
+
       // Handle specific error messages
       if (error.message.includes('Admin access required')) {
         return NextResponse.json(
@@ -83,7 +89,7 @@ export async function GET(request, { params }) {
           { status: 404, headers: noCacheHeaders }
         )
       }
-      
+
       return NextResponse.json(
         { error: 'Failed to fetch transactions' },
         { status: 500, headers: noCacheHeaders }
