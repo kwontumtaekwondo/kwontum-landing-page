@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/cron/monthly-deduction",
+      "path": "/api/credits/monthly-deduction",
       "schedule": "0 0 1 * *"
     }
   ]
