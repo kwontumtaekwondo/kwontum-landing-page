@@ -62,17 +62,23 @@ export async function GET(request, { params }) {
     // Call the RPC function
     // Update your RPC call to include cache control
     const { data, error } = await supabaseServer
-      .rpc('get_user_credit_transactions', {
-        p_user_id: userId,
-        p_page: page,
-        p_limit: limit,
-        p_admin_user_id: decoded.sub
-      }, {
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache'
+      .rpc(
+        'get_user_credit_transactions',
+        {
+          p_user_id: userId,
+          p_page: page,
+          p_limit: limit,
+          p_admin_user_id: decoded.sub
+        },
+        {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          },
+          cache: 'no-store'
         }
-      })
+      )
 
     if (error) {
       console.error('RPC function error:', error)

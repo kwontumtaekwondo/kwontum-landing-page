@@ -48,7 +48,6 @@ export async function GET(request, { params }) {
     }
 
     // Call the RPC function
-    // Call the RPC function with no cache
     const { data, error } = await supabaseServer
       .rpc(
         'get_user_credits_status',
