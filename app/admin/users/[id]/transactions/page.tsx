@@ -97,10 +97,15 @@ export default function AdminUserTransactionsPage() {
     const loadCreditStatus = useCallback(async () => {
         try {
             const token = localStorage.getItem('token')
-            const response = await fetch(`/api/admin/users/${userId}/credits/status`, {
+            // Add timestamp to bust cache
+            const timestamp = Date.now()
+            const response = await fetch(`/api/admin/users/${userId}/credits/status?_t=${timestamp}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                },
+                cache: 'no-store'
             })
 
             if (response.ok) {

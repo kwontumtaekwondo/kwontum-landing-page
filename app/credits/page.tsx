@@ -76,10 +76,13 @@ export default function CreditsPage() {
     const loadCreditStatus = useCallback(async () => {
         try {
             const token = localStorage.getItem('token')
-            const response = await fetch('/api/credits/status', {
+            // Add timestamp to bust cache
+            const timestamp = Date.now()
+            const response = await fetch(`/api/credits/status?_t=${timestamp}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Cache-Control': 'no-cache',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
                 },
                 cache: 'no-store'
             })
