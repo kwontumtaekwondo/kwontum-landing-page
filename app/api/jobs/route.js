@@ -12,75 +12,72 @@ const noCacheHeaders = {
   'Expires': '0'
 };
 
-// GET: Get all jobs (for jobs page)
+// Alternative: Non-paginated version using RPC
 export async function GET(request) {
   try {
-    // Verify token
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     const decoded = verifyToken(token)
     
     if (!decoded) {
       return NextResponse.json(
         { error: 'Authentication required' },
-        { status: 401 }
+        { status: 401, headers: noCacheHeaders }
       )
     }
 
-    // Get query parameters for filtering
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
     const userId = searchParams.get('userId')
-    
-    // Build query
-    let query = supabaseServer
-      .from('jobs')
-      .select(`
-        *,
-        created_by:users!jobs_created_by_fkey(id, name, email),
-        accepted_by:users!jobs_accepted_by_fkey(id, name, email)
-      `)
-      .order('job_date', { ascending: true })
 
-    // Apply filters
-    if (status) {
-      query = query.eq('status', status)
-    }
-    
-    if (userId) {
-      query = query.or(`created_by.eq.${userId},accepted_by.eq.${userId}`)
-    }
-
-    const { data: jobs, error } = await query
+    // Call the non-paginated RPC function
+    const { data, error } = await supabaseServer
+      .rpc('get_filtered_jobs', {
+        p_user_id: decoded.sub,
+        p_status_filter: status,
+        p_user_filter: userId
+      })
 
     if (error) {
-      console.error('Error fetching jobs:', error)
+      console.error('RPC function error:', error)
       return NextResponse.json(
         { error: 'Failed to fetch jobs' },
-        { 
-          status: 500,
-          headers: {
-            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-          }
-        }
+        { status: 500, headers: noCacheHeaders }
       )
     }
 
-    return NextResponse.json({ jobs }, { headers: noCacheHeaders })
+    // Format jobs for response
+    const formattedJobs = (data || []).map(job => ({
+      id: job.id,
+      title: job.title,
+      details: job.details,
+      job_date: job.job_date,
+      created_at: job.created_at,
+      status: job.status,
+      credits: job.credits,
+      created_by: job.created_by,
+      accepted_by: job.accepted_by,
+      created_by_user: job.created_by ? {
+        id: job.creator_id,
+        name: job.creator_name,
+        email: job.creator_email
+      } : undefined,
+      accepted_by_user: job.accepted_by ? {
+        id: job.accepter_id,
+        name: job.accepter_name,
+        email: job.accepter_email
+      } : undefined
+    }))
+
+    return NextResponse.json({ 
+      jobs: formattedJobs,
+      total: formattedJobs.length
+    }, { headers: noCacheHeaders })
     
   } catch (error) {
     console.error('GET jobs error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
-      { 
-        status: 500,
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        }
-      }
+      { status: 500, headers: noCacheHeaders }
     )
   }
 }

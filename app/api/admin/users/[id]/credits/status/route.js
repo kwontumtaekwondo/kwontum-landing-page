@@ -1,6 +1,15 @@
+// app/api/admin/users/[id]/credits/status/route.js
 import { NextResponse } from 'next/server'
 import { supabaseServer } from '@/lib/supabase-server'
 import { verifyToken } from '@/lib/jwt'
+
+export const dynamic = 'force-dynamic';
+
+const noCacheHeaders = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+  'Pragma': 'no-cache',
+  'Expires': '0'
+};
 
 export async function GET(request, { params }) {
   try {
@@ -10,7 +19,7 @@ export async function GET(request, { params }) {
     if (!decoded) {
       return NextResponse.json(
         { error: 'Authentication required' },
-        { status: 401 }
+        { status: 401, headers: noCacheHeaders }
       )
     }
 
@@ -24,91 +33,85 @@ export async function GET(request, { params }) {
     if (!adminUser?.is_admin) {
       return NextResponse.json(
         { error: 'Admin access required' },
-        { status: 403 }
+        { status: 403, headers: noCacheHeaders }
       )
     }
 
     const userId = params.id
-
-    // Get user info including credit balance
-    const { data: user, error: userError } = await supabaseServer
-      .from('users')
-      .select('id, name, email, status, credit') // Added credit field
-      .eq('id', userId)
-      .single()
-
-    if (userError) {
+    
+    // Validate user ID format
+    if (!userId || typeof userId !== 'string' || userId.length < 36) {
       return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
+        { error: 'Invalid user ID' },
+        { status: 400, headers: noCacheHeaders }
       )
     }
 
-    // Use user.credit field as source of truth
-    const currentBalance = user?.credit || 0
+    // Call the RPC function
+    const { data, error } = await supabaseServer
+      .rpc('get_user_credits_status', {
+        p_user_id: userId,
+        p_admin_user_id: decoded.sub
+      })
 
-    // Calculate lifetime earned (only positive amounts)
-    const { data: positiveTransactions } = await supabaseServer
-      .from('credit_transactions')
-      .select('amount')
-      .eq('user_id', userId)
-      .gt('amount', 0)
-
-    const lifetimeEarned = positiveTransactions?.reduce((sum, t) => sum + t.amount, 0) || 0
-
-    // Calculate this month earned
-    const now = new Date()
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-    const startOfMonthISO = startOfMonth.toISOString()
-
-    const { data: monthlyTransactions } = await supabaseServer
-      .from('credit_transactions')
-      .select('amount')
-      .eq('user_id', userId)
-      .gte('created_at', startOfMonthISO)
-      .gt('amount', 0)
-
-    const monthlyEarned = monthlyTransactions?.reduce((sum, t) => sum + t.amount, 0) || 0
-
-    // Settings
-    const requiredCredits = 8 // Monthly requirement
-    
-    // Calculate next deduction date (1st of next month)
-    let nextYear = now.getFullYear()
-    let nextMonth = now.getMonth() + 1
-    
-    // Handle December -> January wrap
-    if (nextMonth === 12) {
-      nextMonth = 0 // January is 0 in JS
-      nextYear += 1
+    if (error) {
+      console.error('RPC function error:', error)
+      return NextResponse.json(
+        { error: 'Failed to fetch user credits status' },
+        { status: 500, headers: noCacheHeaders }
+      )
     }
-    
-    const nextDeductionDate = new Date(nextYear, nextMonth, 1).toISOString()
-    
-    const creditsAfterDeduction = currentBalance - requiredCredits
-    const isOnTrack = currentBalance >= requiredCredits
 
-    return NextResponse.json({
-      currentBalance,
-      lifetimeEarned,
-      monthlyEarned,
-      requiredCredits,
-      creditsAfterDeduction,
-      nextDeductionDate,
-      isOnTrack,
+    // Check if we got results
+    if (!data || data.length === 0) {
+      return NextResponse.json(
+        { error: 'Failed to fetch user credits status' },
+        { status: 500, headers: noCacheHeaders }
+      )
+    }
+
+    const result = data[0]
+
+    // Check admin verification
+    if (!result.admin_verified) {
+      return NextResponse.json(
+        { error: 'Admin access required' },
+        { status: 403, headers: noCacheHeaders }
+      )
+    }
+
+    // Check if user exists
+    if (!result.user_exists) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404, headers: noCacheHeaders }
+      )
+    }
+
+    // Format the response
+    const response = {
+      currentBalance: result.current_balance,
+      lifetimeEarned: result.lifetime_earned,
+      monthlyEarned: result.monthly_earned,
+      requiredCredits: result.required_credits,
+      creditsAfterDeduction: result.credits_after_deduction,
+      nextDeductionDate: result.next_deduction_date,
+      isOnTrack: result.is_on_track,
       user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        status: user.status
+        id: result.user_id,
+        name: result.user_name,
+        email: result.user_email,
+        status: result.user_status
       }
-    })
+    }
+
+    return NextResponse.json(response, { headers: noCacheHeaders })
 
   } catch (error) {
     console.error('GET user credits status error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 500, headers: noCacheHeaders }
     )
   }
 }
