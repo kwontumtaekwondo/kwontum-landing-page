@@ -2,8 +2,7 @@
   "crons": [
     {
       "path": "/api/credits/monthly-deduction",
-      "schedule": "0 16 1 * *",
-      "method": "POST"
+      "schedule": "0 16 1 * *"
     }
   ]
 }

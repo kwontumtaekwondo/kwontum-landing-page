@@ -3,10 +3,11 @@ import { supabaseServer } from '@/lib/supabase-server'
 
 const CRON_SECRET = process.env.CRON_SECRET
 
-export async function POST(request) {
+// Main handler for GET requests (used by Vercel cron)
+export async function GET(request) {
   try {
     // Log incoming request for debugging
-    console.log('📥 Monthly deduction called')
+    console.log('📥 Monthly deduction called via GET')
     console.log('🔐 Auth header:', request.headers.get('authorization') ? 'Present' : 'Missing')
     
     // Vercel Cron sends: Authorization: Bearer YOUR_CRON_SECRET
@@ -66,18 +67,56 @@ export async function POST(request) {
   }
 }
 
-// Keep GET for manual testing
-export async function GET(request) {
-  const url = new URL(request.url)
-  const secret = url.searchParams.get('secret')
-  
-  if (secret !== CRON_SECRET) {
+// Keep POST for manual testing or other integrations
+export async function POST(request) {
+  // You can keep the same logic as GET or handle it differently
+  // For consistency, you can reuse the GET logic:
+  try {
+    console.log('📥 Monthly deduction called via POST')
+    const authHeader = request.headers.get('authorization')
+    
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { error: 'Unauthorized - No Bearer token' },
+        { status: 401 }
+      )
+    }
+    
+    const token = authHeader.replace('Bearer ', '')
+    
+    if (token !== CRON_SECRET) {
+      return NextResponse.json(
+        { error: 'Unauthorized - Invalid token' },
+        { status: 401 }
+      )
+    }
+
+    console.log('✅ POST Authorization successful')
+    // ... rest of the deduction logic same as GET
+    const { data, error } = await supabaseServer
+      .rpc('deduct_monthly_credits')
+
+    if (error) {
+      console.error('❌ Supabase RPC error:', error)
+      return NextResponse.json(
+        { error: 'Database error', details: error.message },
+        { status: 500 }
+      )
+    }
+
+    console.log('✅ Monthly deduction completed via POST:', data)
+    
+    return NextResponse.json({
+      success: true,
+      message: 'Monthly deductions processed via POST',
+      timestamp: new Date().toISOString(),
+      data: data
+    })
+  } catch (error) {
+    console.error('❌ Unhandled error:', error)
     return NextResponse.json(
-      { error: 'Add ?secret=YOUR_CRON_SECRET' },
-      { status: 401 }
+      { error: 'Internal error', details: error.message },
+      { status: 500 }
     )
   }
-  
-  console.log('🧪 Manual test via GET')
-  return POST(request)
 }
