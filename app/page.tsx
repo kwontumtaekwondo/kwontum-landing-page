@@ -34,6 +34,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, Award, House, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useRef, useState } from 'react';
+import Image from "next/image";
 
 export default function Home() {
     const playerRef = useRef<YTPlayer | null>(null);
@@ -303,6 +304,21 @@ export default function Home() {
                                 </p>
                             </CardContent>
                         </Card>
+                    </div>
+                </div>
+            </section>
+
+            {/* Timetable Section */}
+            <section className="py-12 sm:py-16 lg:py-20 bg-white dark:bg-gray-900">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="relative w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[2/1] rounded-xl overflow-hidden">
+                        <Image
+                            src="/img/timetable.jpg"
+                            alt="Kwontum Taekwondo Timetable"
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                        />
                     </div>
                 </div>
             </section>

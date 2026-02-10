@@ -16,8 +16,10 @@ import {
     Filter,
     Search,
     AlertCircle,
-    X
+    X,
+    Copy
 } from 'lucide-react'
+import AuthClient from '../../lib/auth-client'
 
 interface Job {
     id: string
@@ -146,9 +148,9 @@ export default function JobsPage() {
 
                 if (!response.ok) {
                     if (response.status === 401 || response.status === 403) {
-                        localStorage.removeItem('token')
-                        localStorage.removeItem('user')
-                        router.push('/')
+                        AuthClient.logout()
+                        // router.push('/') // AuthClient.logout triggers event, Header updates. But we still want to redirect.
+                        window.location.href = '/'
                         return
                     }
                     throw new Error('Failed to load jobs')
@@ -231,7 +233,7 @@ export default function JobsPage() {
 
             // Reload jobs
             const jobsResponse = await fetch('/api/jobs', {
-                headers: { 
+                headers: {
                     'Authorization': `Bearer ${token}`,
                     'Cache-Control': 'no-cache',
                 },
@@ -272,7 +274,7 @@ export default function JobsPage() {
 
             // Reload jobs
             const jobsResponse = await fetch('/api/jobs', {
-                headers: { 
+                headers: {
                     'Authorization': `Bearer ${token}`,
                     'Cache-Control': 'no-cache',
                 },
@@ -309,7 +311,7 @@ export default function JobsPage() {
 
             // Reload jobs
             const jobsResponse = await fetch('/api/jobs', {
-                headers: { 
+                headers: {
                     'Authorization': `Bearer ${token}`,
                     'Cache-Control': 'no-cache',
                 },
@@ -321,7 +323,7 @@ export default function JobsPage() {
             // Refresh user data if credits were awarded
             if (result.creditsAwarded) {
                 const userResponse = await fetch('/api/auth/me', {
-                    headers: { 
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                         'Cache-Control': 'no-cache',
                     },
@@ -362,7 +364,7 @@ export default function JobsPage() {
 
             // Reload jobs
             const jobsResponse = await fetch('/api/jobs', {
-                headers: { 
+                headers: {
                     'Authorization': `Bearer ${token}`,
                     'Cache-Control': 'no-cache',
                 },
@@ -399,6 +401,43 @@ export default function JobsPage() {
         } catch (err) {
             console.error('Error deleting job:', err)
             alert(err instanceof Error ? err.message : 'Failed to delete job')
+        }
+    }
+
+    const handleDuplicateJob = async (jobId: string) => {
+        if (!confirm('Duplicate this job?')) return
+
+        try {
+            const token = localStorage.getItem('token')
+            const response = await fetch(`/api/jobs/${jobId}/duplicate`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
+            })
+
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(data.error || 'Failed to duplicate job')
+            }
+
+            // Reload jobs to show the new duplicate
+            const jobsResponse = await fetch('/api/jobs', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Cache-Control': 'no-cache',
+                },
+                cache: 'no-store'
+            })
+            const jobsData = await jobsResponse.json()
+            setJobs(jobsData.jobs || [])
+
+            alert('Job duplicated successfully!')
+        } catch (err) {
+            console.error('Error duplicating job:', err)
+            alert(err instanceof Error ? err.message : 'Failed to duplicate job')
         }
     }
 
@@ -622,13 +661,22 @@ export default function JobsPage() {
 
                                         {/* Admin Actions */}
                                         {user?.isAdmin && (
-                                            <button
-                                                onClick={() => handleDeleteJob(job.id)}
-                                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
-                                                title="Delete job"
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                            </button>
+                                            <>
+                                                <button
+                                                    onClick={() => handleDuplicateJob(job.id)}
+                                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                                                    title="Duplicate job"
+                                                >
+                                                    <Copy className="h-4 w-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeleteJob(job.id)}
+                                                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                                                    title="Delete job"
+                                                >
+                                                    <Trash2 className="h-4 w-4" />
+                                                </button>
+                                            </>
                                         )}
                                     </div>
 
@@ -644,8 +692,12 @@ export default function JobsPage() {
                                         <div>
                                             <p className="text-gray-500">Accepted by</p>
                                             <p className="font-medium">
-                                                {job.accepted_by?.name ||
-                                                    (job.status === 'open' ? 'Not accepted yet' : 'Not assigned')}
+                                                {job.accepted_by?.id === user?.id ? (
+                                                    <span className="text-green-700 font-bold">You</span>
+                                                ) : (
+                                                    job.accepted_by?.name ||
+                                                    (job.status === 'open' ? 'Not accepted yet' : 'Assigned')
+                                                )}
                                             </p>
                                         </div>
                                     </div>

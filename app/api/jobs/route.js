@@ -65,18 +65,16 @@ export async function GET(request) {
       created_at: job.created_at,
       status: job.status,
       credits: job.credits,
-      created_by: job.created_by,
-      accepted_by: job.accepted_by,
-      created_by_user: job.created_by ? {
+      created_by: job.created_by ? {
         id: job.creator_id,
         name: job.creator_name,
         email: job.creator_email
       } : undefined,
-      accepted_by_user: job.accepted_by ? {
+      accepted_by: job.accepted_by ? {
         id: job.accepter_id,
         name: job.accepter_name,
         email: job.accepter_email
-      } : undefined
+      } : undefined,
     }))
 
     return NextResponse.json({

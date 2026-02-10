@@ -94,13 +94,23 @@ export async function GET(request) {
       console.error('Count error:', countError)
     }
 
+    // Map RPC result to expected format (ensure stats object exists)
+    const formattedUsers = (usersWithStats || []).map(user => ({
+      ...user,
+      stats: {
+        activeJobs: user.active_jobs || user.activeJobs || 0,
+        completedJobs: user.completed_jobs || user.completedJobs || 0,
+        totalJobs: user.total_jobs || user.totalJobs || 0
+      }
+    }))
+
     return NextResponse.json({
       success: true,
-      users: usersWithStats || [],
+      users: formattedUsers,
       pagination: {
         currentPage: page,
         totalPages: Math.ceil((count || 0) / limit),
-        totalUsers: count || usersWithStats?.length || 0,
+        totalUsers: count || formattedUsers.length || 0,
         limit
       },
       timestamp: new Date().toISOString(),

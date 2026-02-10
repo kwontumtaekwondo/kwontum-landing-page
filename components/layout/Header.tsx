@@ -18,7 +18,7 @@ interface AppUser {
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [user, setUser] = useState<AppUser | null>(null)
+  const [user, setUser] = useState<AppUser | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Check login status on component mount
@@ -27,7 +27,7 @@ const [user, setUser] = useState<AppUser | null>(null)
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem('token');
         const userStr = localStorage.getItem('user');
-        
+
         if (token && userStr) {
           try {
             const userData = JSON.parse(userStr);
@@ -46,16 +46,18 @@ const [user, setUser] = useState<AppUser | null>(null)
     };
 
     checkAuth();
-    
+
     // Listen for storage changes (login/logout)
     const handleStorageChange = () => {
       checkAuth();
     };
-    
+
     window.addEventListener('storage', handleStorageChange);
-    
+    window.addEventListener('auth-change', checkAuth);
+
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('auth-change', checkAuth);
     };
   }, []);
 
@@ -149,7 +151,7 @@ const [user, setUser] = useState<AppUser | null>(null)
               <User className="h-5 w-5" />
               <span className="text-sm font-medium">{user?.name?.split(' ')[0] || 'User'}</span>
             </button>
-            
+
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">
                 <div className="py-1">
@@ -369,7 +371,7 @@ const [user, setUser] = useState<AppUser | null>(null)
       <nav className="hidden md:flex items-center gap-8 font-[550] font-dolceVita">
         {/* Always show these links */}
         <DesktopNavLinks />
-        
+
         {/* Auth section - only show when logged in */}
         {isLoggedIn && (
           <div className="flex items-center gap-4">
@@ -386,7 +388,7 @@ const [user, setUser] = useState<AppUser | null>(null)
                   </span>
                 )}
               </button>
-              
+
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border z-50">
                   {/* User Info Section */}
@@ -404,7 +406,7 @@ const [user, setUser] = useState<AppUser | null>(null)
                       )}
                     </div>
                   )}
-                  
+
                   <div className="py-1">
                     <Link
                       href="/jobs"
@@ -422,7 +424,7 @@ const [user, setUser] = useState<AppUser | null>(null)
                       <CreditCard className="h-4 w-4" />
                       My Credits & History
                     </Link>
-                    
+
                     {user?.isAdmin && (
                       <>
                         <div className="border-t my-1"></div>
@@ -444,7 +446,7 @@ const [user, setUser] = useState<AppUser | null>(null)
                         </Link>
                       </>
                     )}
-                    
+
                     <div className="border-t my-1"></div>
                     <button
                       onClick={handleLogout}
