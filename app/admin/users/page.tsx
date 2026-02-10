@@ -59,7 +59,7 @@ export default function AdminUsersPage() {
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState<string>('all')
     const [selectedUser, setSelectedUser] = useState<User | null>(null)
-    const [dropdownPosition, setDropdownPosition] = useState<{x: number, y: number, userId: string} | null>(null)
+    const [dropdownPosition, setDropdownPosition] = useState<{ x: number, y: number, userId: string } | null>(null)
     const [showAdjustCreditsModal, setShowAdjustCreditsModal] = useState(false)
     const [showLockModal, setShowLockModal] = useState(false)
     const [showUnlockModal, setShowUnlockModal] = useState(false)
@@ -836,7 +836,7 @@ export default function AdminUsersPage() {
 
             {/* Dropdown Portal */}
             {dropdownPosition && typeof document !== 'undefined' && createPortal(
-                <div 
+                <div
                     id="dropdown-portal"
                     className="fixed z-[9999] w-48 bg-white rounded-lg shadow-xl border max-h-64 overflow-y-auto"
                     style={{

@@ -397,8 +397,8 @@ export default function CreditsPage() {
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
                                             <div className={`p-2 rounded-lg ${transaction.amount > 0
-                                                    ? 'bg-green-100 text-green-600'
-                                                    : 'bg-red-100 text-red-600'
+                                                ? 'bg-green-100 text-green-600'
+                                                : 'bg-red-100 text-red-600'
                                                 }`}>
                                                 {transaction.amount > 0 ? (
                                                     <ArrowUpRight className="h-4 w-4" />
@@ -433,8 +433,8 @@ export default function CreditsPage() {
                                     onClick={handlePrevPage}
                                     disabled={!pagination.hasPrev}
                                     className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium ${pagination.hasPrev
-                                            ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                            : 'bg-gray-50 text-gray-400 cursor-not-allowed'
+                                        ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                        : 'bg-gray-50 text-gray-400 cursor-not-allowed'
                                         }`}
                                 >
                                     <ChevronLeft className="h-4 w-4" />
@@ -451,8 +451,8 @@ export default function CreditsPage() {
                                     onClick={handleNextPage}
                                     disabled={!pagination.hasNext}
                                     className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium ${pagination.hasNext
-                                            ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                            : 'bg-gray-50 text-gray-400 cursor-not-allowed'
+                                        ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                        : 'bg-gray-50 text-gray-400 cursor-not-allowed'
                                         }`}
                                 >
                                     Next
