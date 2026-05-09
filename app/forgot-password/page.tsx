@@ -72,7 +72,11 @@ export default function ForgotPasswordPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || 'Failed to send reset code')
+        if (response.status >= 500) {
+            setError((data.error ? data.error : 'Failed to send reset code') + ' (internal)')
+        } else {
+            setError(data.error || 'Failed to send reset code')
+        }
         return
       }
 
@@ -87,7 +91,7 @@ export default function ForgotPasswordPage() {
 
     } catch (err) {
       console.error('Error sending OTP:', err)
-      setError('An unexpected error occurred. Please try again.')
+      setError('An unexpected error occurred (internal). Please try again.')
     } finally {
       setLoading(false)
     }
@@ -117,7 +121,11 @@ export default function ForgotPasswordPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || 'Invalid or expired code')
+        if (response.status >= 500) {
+            setError((data.error ? data.error : 'Invalid or expired code') + ' (internal)')
+        } else {
+            setError(data.error || 'Invalid or expired code')
+        }
         return
       }
 
@@ -127,7 +135,7 @@ export default function ForgotPasswordPage() {
 
     } catch (err) {
       console.error('Error verifying OTP:', err)
-      setError('An unexpected error occurred. Please try again.')
+      setError('An unexpected error occurred (internal). Please try again.')
     } finally {
       setLoading(false)
     }
@@ -169,7 +177,11 @@ export default function ForgotPasswordPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || 'Failed to reset password')
+        if (response.status >= 500) {
+            setError((data.error ? data.error : 'Failed to reset password') + ' (internal)')
+        } else {
+            setError(data.error || 'Failed to reset password')
+        }
         return
       }
 
@@ -182,7 +194,7 @@ export default function ForgotPasswordPage() {
 
     } catch (err) {
       console.error('Error resetting password:', err)
-      setError('An unexpected error occurred. Please try again.')
+      setError('An unexpected error occurred (internal). Please try again.')
     } finally {
       setLoading(false)
     }

@@ -37,6 +37,9 @@ export default function LoginPage() {
       const data = await response.json()
 
       if (!response.ok) {
+        if (response.status >= 500) {
+            throw new Error((data.error ? data.error : 'Login failed') + ' (internal)')
+        }
         throw new Error(data.error || 'Login failed')
       }
 
@@ -50,7 +53,7 @@ export default function LoginPage() {
       router.push('/jobs')
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred (internal)')
     } finally {
       setLoading(false)
     }

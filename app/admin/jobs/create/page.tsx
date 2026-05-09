@@ -2,6 +2,7 @@
 "use client";
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import AuthClient from '@/lib/auth-client'
 
 export default function CreateJobPage() {
   const router = useRouter()
@@ -24,7 +25,8 @@ export default function CreateJobPage() {
         const userStr = localStorage.getItem('user')
 
         if (!token || !userStr) {
-          router.push('/login')
+          AuthClient.logout()
+          window.location.href = '/login'
           return
         }
 
@@ -41,7 +43,8 @@ export default function CreateJobPage() {
 
       } catch (err) {
         console.error('Error checking admin:', err)
-        router.push('/login')
+        AuthClient.logout()
+        window.location.href = '/login'
       }
     }
 

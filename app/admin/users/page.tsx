@@ -23,6 +23,7 @@ import {
     Clock,
     Shield,
 } from 'lucide-react'
+import AuthClient from '@/lib/auth-client'
 
 interface User {
     id: string
@@ -115,7 +116,8 @@ export default function AdminUsersPage() {
 
             if (!response.ok) {
                 if (response.status === 401 || response.status === 403) {
-                    router.push('/')
+                    AuthClient.logout()
+                    window.location.href = '/'
                     return
                 }
                 throw new Error('Failed to load users')
@@ -133,7 +135,7 @@ export default function AdminUsersPage() {
         } finally {
             setLoading(false)
         }
-    }, [pagination.currentPage, pagination.limit, searchTerm, statusFilter, router])
+    }, [pagination.currentPage, pagination.limit, searchTerm, statusFilter])
 
     // Load users on component mount
     useEffect(() => {

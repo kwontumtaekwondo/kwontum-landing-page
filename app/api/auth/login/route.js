@@ -26,7 +26,11 @@ export async function POST(request) {
       .eq('email', email.toLowerCase())
       .single()
 
-    if (error || !user) {
+    if (error && error.code !== 'PGRST116') {
+      throw error; // Database error or connection issue
+    }
+
+    if (!user || error) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }

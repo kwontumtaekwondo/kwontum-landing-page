@@ -18,6 +18,7 @@ import {
     ChevronLeft,
     ChevronRight
 } from 'lucide-react'
+import AuthClient from '@/lib/auth-client'
 
 interface CreditTransaction {
     id: string
@@ -137,7 +138,8 @@ export default function CreditsPage() {
                 const userStr = localStorage.getItem('user')
 
                 if (!token || !userStr) {
-                    router.push('/login')
+                    AuthClient.logout()
+                    window.location.href = '/login'
                     return
                 }
 
@@ -149,7 +151,8 @@ export default function CreditsPage() {
 
             } catch (error) {
                 console.error('Error loading credits data:', error)
-                router.push('/login')
+                AuthClient.logout()
+                window.location.href = '/login'
             } finally {
                 setLoading(false)
             }
