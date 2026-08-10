@@ -2,21 +2,23 @@ import { NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase-server';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
 const CRON_SECRET = process.env.CRON_SECRET;
 
 export async function GET(request) {
   try {
     const authHeader = request.headers.get('authorization');
-    
+
     if (!authHeader?.startsWith('Bearer ')) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
-    
+
     const token = authHeader.replace('Bearer ', '');
-    
+
     if (token !== CRON_SECRET) {
       return NextResponse.json(
         { error: 'Unauthorized' },
